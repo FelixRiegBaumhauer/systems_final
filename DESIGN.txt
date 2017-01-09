@@ -45,8 +45,8 @@ Game developer: Felix
 Timeline:
 Approximate Due Date: Jan 20th
 
-By Jan 11th, Wed--simple connect four, ie two player only, only accessible via 1 computer
-By Jan 15th, Sun--working connect four, with that allows for multiple users on one computer
-By Jan 18th, Wed--integrating the game into a server, client structure, that allows for non local users
+By Jan 13th, Fri--simple connect four, ie two player only, only accessible via 1 computer
+By Jan 17th, Tue--working connect four, with that allows for multiple users on one computer
+By Jan 22nd, Sat--integrating the game into a server, client structure, that allows for non local users
 Project expected to be complete by Jan 18th, 
 The remaining two days will be used to add extra features, ie leaderboard etc. 
