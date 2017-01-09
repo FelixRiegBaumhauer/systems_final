@@ -50,9 +50,3 @@ By Jan 17th, Tue--working connect four, with that allows for multiple users on o
 By Jan 22nd, Sat--integrating the game into a server, client structure, that allows for non local users
 Project expected to be complete by Jan 18th, 
 The remaining two days will be used to add extra features, ie leaderboard etc. 
-
-Files:
-makefile
-lobby.c
-network.c
-game.c
