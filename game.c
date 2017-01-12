@@ -8,7 +8,7 @@ void initialize(char board[], int x, int y){
   int j;
   for(i=0; i<y; i++){
     for(j=0; j<x; j++){
-      board[(j+4*i)]='*';//(j+4*i)+'0';
+      board[(j+x*i)]='-';//(j+4*i)+'0';
     }
   }
 }
@@ -18,7 +18,7 @@ void print_board_old(char board[], int x, int y){
   int j;
   for(i=0; i<y; i++){
     for(j=0; j<x; j++){
-      printf("%c",board[j+4*i]);
+      printf("%c",board[j+x*i]);
     }
     printf("\n");
   }
@@ -31,7 +31,7 @@ void print_board(char board[], int x, int y){
   int j;
   for(i=y; i>=0; i--){
     for(j=0; j<x; j++){
-      printf("%c",board[j+4*i]);
+      printf("%c ",board[j+x*i]);
     }
     printf("\n");
   }
@@ -43,9 +43,9 @@ void print_board(char board[], int x, int y){
 int placer_old(char board[], int x, int y, int target){//, int player){
   int i;
   for(i=0; i<y; i++){
-    if(board[target+(4*i)] == '*'){
+    if(board[target+(x*i)] == '-'){
 
-      printf("succ %d %d\n", i, target);
+      //printf("succ %d %d\n", i, target);
 
 
       board[target+(4*i)] = 'o';
@@ -70,17 +70,17 @@ int placer(char board[], int x, int y, int target, int player){
   }
   int i;
   for(i=0; i<y; i++){
-    if(board[target+(4*i)] == '*'){
+    if(board[target+(x*i)] == '-'){
 
       printf("succ %d %d\n", i, target);
 
 
       //board[target+(4*i)] = player+'0';
       if(player == 1){
-	board[target+(4*i)] = 'o';
+	board[target+(x*i)] = 'O';
       }
       if(player == 2){
-	board[target+(4*i)] = 'x';
+	board[target+(x*i)] = 'X';
       }
       /*
       if(player == 1){
@@ -155,8 +155,8 @@ int runner(int x, int y){
 }
 
 int main(){
-  int x=4;
-  int y=4;
+  int x = 7;
+  int y = 7;
   runner(x,y);
   return 0;
 }
