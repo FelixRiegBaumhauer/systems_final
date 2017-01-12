@@ -62,6 +62,20 @@ char * ask_for_password() {
 	return buffer;
 }
 
+char * get_current_lobbies() {
+	return 0;
+}
+
+char * join_game() {
+	printf(get_current_lobbies());
+	printf("Please type the name of the lobby you would like to join and press enter: ");
+	char * buffer = calloc(12,sizeof(char));
+  	fgets(buffer, 12, stdin);
+	char * newline = strchr(buffer,'\n');
+	*newline = 0;
+	return buffer;
+}
+
 int main() {
 	char * username = ask_for_handle();
 	int action = ask_for_action();
@@ -71,5 +85,7 @@ int main() {
 		if (privacymode == 0) {
 			char * password = ask_for_password();
 		}
+	} else {
+		
 	}
 }
