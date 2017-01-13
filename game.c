@@ -69,7 +69,7 @@ int placer_old(char board[], int x, int y, int target){//, int player){
 }
 */
 
-int placer(char board[], int x, int y, int target, int player){
+int placer(char board[], int x, int y, int target, char player_icon){
   if(target >= x){
     return -1;
   }
@@ -77,20 +77,15 @@ int placer(char board[], int x, int y, int target, int player){
   for(i=0; i<y; i++){
     if(board[target+(x*i)] == '-'){
 
+      board[target+(x*i)] = player_icon;      
+      
+      /*
       //board[target+(4*i)] = player+'0';
       if(player == 1){
 	board[target+(x*i)] = 'O';
       }
       if(player == 2){
 	board[target+(x*i)] = 'X';
-      }
-      /*
-      if(player == 1){
-	board[target+(4*i)] = 'o';
-      }
-      
-      else{//if its two
-	board[target+(4*1)] = 'x';
       }
       */
       return 1;//success
@@ -181,11 +176,13 @@ int checker(char board[], int x, int y, char symbol){
   return -1;//if true
 }
 
-int runner(int x, int y){
+int runner(int x, int y, int players){
   char board [(x*y)];
+
+  char icons[10] = {'O','X','@','*','$','M','W'};//seven player suppoerted currentlly
   
   initialize(board, x, y);
-  print_board(board, x, y);
+  //print_board(board, x, y);
 
 
   //Testing
@@ -217,16 +214,36 @@ int runner(int x, int y){
   scanf("%d", &i);
   printf("%d\n", (i+1));
   */
-  
-  printf("You are Playing\n");
+
+
+  printf("The Game Has Begun\n");
+  print_board(board, x, y);
   while(1){
-    print_board(board, x, y);
+    //print_board(board, x, y);
+
     int input;
+    int a;
     
+    for(a=0; a<players; a++){
+      printf("Player %d move:\n", a+1);
+      printf("Player %d's icon is: %c\n", a+1, icons[a]);
+      printf( "Enter your move (0 for leftmost row) :");
+      scanf("%d", &input);
+      placer(board, x, y, input, icons[a]);
+      print_board(board, x, y);
+      
+      //CHECK IF PLAYER a+1 is WINNER
+      if(checker(board, x, y, icons[a]) == 1){
+	printf("PLAYER %d has won\n", a+1);
+	return 1;//aborts the game
+      }
+    }
+    
+    /*
     printf("Player 1 move:\n");
     printf( "Enter your move (0 for leftmost row) :");
     scanf("%d", &input);
-    placer(board, x, y, input, 1);
+    placer(board, x, y, input, 'O');
     print_board(board, x, y);
     //CHECK IF PLAYER 1 is WINNER
     if(checker(board, x, y, 'O') == 1){
@@ -238,7 +255,7 @@ int runner(int x, int y){
     printf("Player 2 move:\n");
     printf( "Enter your move (0 for leftmost row) :");
     scanf("%d", &input);
-    placer(board, x, y, input, 2);
+    placer(board, x, y, input, 'X');
     print_board(board, x, y);
 
     //CHECK IF PLAYER 2 is WINNER
@@ -246,13 +263,20 @@ int runner(int x, int y){
       printf("PLAYER 2 has won\n");
       return 1;//aborts the game
     }
+    */
   }
-  
 }
 
 int main(){
   int x = 7;
   int y = 7;
-  runner(x,y);
+
+  int num_p;
+  
+  printf("Enter the number of players:\n");
+  scanf("%d", &num_p);
+  
+  
+  runner(x,y, num_p);
   return 0;
 }
