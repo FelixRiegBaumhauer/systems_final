@@ -8,11 +8,12 @@ void initialize(char board[], int x, int y){
   int j;
   for(i=0; i<y; i++){
     for(j=0; j<x; j++){
-      board[(j+x*i)]='-';//(j+4*i)+'0';
+      board[(j+x*i)]='-';
     }
   }
 }
 
+/*
 void print_board_old(char board[], int x, int y){
   int i;
   int j;
@@ -25,11 +26,12 @@ void print_board_old(char board[], int x, int y){
 
   printf("------------------------------\n");
 }
+*/
 
 void print_board(char board[], int x, int y){
   int i;
   int j;
-  for(i=y; i>=0; i--){
+  for(i=(y-1); i>=0; i--){
     for(j=0; j<x; j++){
       printf("%c ",board[j+x*i]);
     }
@@ -38,7 +40,7 @@ void print_board(char board[], int x, int y){
 
   printf("------------------------------\n");
 }
-
+/*
 //target is where you want to place the chip
 int placer_old(char board[], int x, int y, int target){//, int player){
   int i;
@@ -49,6 +51,7 @@ int placer_old(char board[], int x, int y, int target){//, int player){
 
 
       board[target+(4*i)] = 'o';
+*/
       /*
       if(player == 1){
 	board[target+(4*i)] = 'o';
@@ -58,11 +61,13 @@ int placer_old(char board[], int x, int y, int target){//, int player){
 	board[target+(4*1)] = 'x';
       }
       */
+/*
       return 1;//success
     }
   }
   return -1;//only if row full
 }
+*/
 
 int placer(char board[], int x, int y, int target, int player){
   if(target >= x){
@@ -71,9 +76,6 @@ int placer(char board[], int x, int y, int target, int player){
   int i;
   for(i=0; i<y; i++){
     if(board[target+(x*i)] == '-'){
-
-      printf("succ %d %d\n", i, target);
-
 
       //board[target+(4*i)] = player+'0';
       if(player == 1){
@@ -95,6 +97,88 @@ int placer(char board[], int x, int y, int target, int player){
     }
   }
   return -1;//only if row full
+}
+
+
+int vertical_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+(inc*y)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+
+int horizontal_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+//right and up
+int up_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc*(y+1)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+//right and down
+int down_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc*(y-1)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+int checker(char board[], int x, int y, char symbol){
+  int i;
+  int j;
+  for(i=0; i<y; i++){
+    for(j=0; j<x; j++){
+      if(vertical_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(horizontal_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(up_slant_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(down_slant_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+    }
+  }
+  return -1;//if true
 }
 
 int runner(int x, int y){
@@ -144,12 +228,24 @@ int runner(int x, int y){
     scanf("%d", &input);
     placer(board, x, y, input, 1);
     print_board(board, x, y);
+    //CHECK IF PLAYER 1 is WINNER
+    if(checker(board, x, y, 'O') == 1){
+      printf("PLAYER 1 has won\n");
+      return 1;//aborts the game
+    }
 
+    
     printf("Player 2 move:\n");
     printf( "Enter your move (0 for leftmost row) :");
     scanf("%d", &input);
     placer(board, x, y, input, 2);
     print_board(board, x, y);
+
+    //CHECK IF PLAYER 2 is WINNER
+    if(checker(board, x, y, 'X') == 1){
+      printf("PLAYER 2 has won\n");
+      return 1;//aborts the game
+    }
   }
   
 }
