@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 //returns username
 char * ask_for_handle() {
@@ -62,18 +64,74 @@ char * ask_for_password() {
 	return buffer;
 }
 
+//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
+//to call this function, and then returns the result
+void create_game(char * username, char * gamename, char * password) {
+	FILE * fd;
+	char * string_to_write = calloc(1024,sizeof(char));
+	
+	strcat(string_to_write,username);
+	strcat(string_to_write,",");
+	strcat(string_to_write,gamename);
+	strcat(string_to_write,",");
+	strcat(string_to_write,password);
+	strcat(string_to_write,"\n");
+	
+	fd = fopen("games.csv", "a");
+	
+	fwrite(string_to_write,sizeof(string_to_write),sizeof(char),fd);
+}
+
+//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
+//to call this function, and then returns the result
 char * get_current_lobbies() {
-	return 0;
+	FILE * fd;
+	char * line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	int count = 0;
+	char * gamenames = calloc(1024,sizeof(char));
+	
+	strcat(gamenames,"Current games:\n");
+	
+	fd = fopen("games.csv", "r");
+	
+	if (fd == NULL) {
+		return "File not found.\n";
+	}
+	
+	while ((read = getline(&line, &len, fd)) != -1) {
+		strcat(gamenames,line);
+		strcat(gamenames,"\n");
+		count++;
+	}
+	
+	if (count == 0) {
+		return "No games exist. Please create one.\n";
+	}
+	
+	fclose(fd);
+	if (line) {
+		free(line);
+	}
+	
+	return gamenames;
 }
 
 char * join_game() {
-	printf(get_current_lobbies());
-	printf("Please type the name of the lobby you would like to join and press enter: ");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
-	char * newline = strchr(buffer,'\n');
-	*newline = 0;
-	return buffer;
+	char * lobbies = get_current_lobbies();
+	if (strcmp(lobbies,"No games exist. Please create one.\n") == 0) {
+		printf("%s\n",lobbies);
+		return 0;
+	} else {
+		printf("%s\n",lobbies);
+		printf("Please type the name of the lobby you would like to join and press enter: ");
+		char * buffer = calloc(12,sizeof(char));
+		fgets(buffer, 12, stdin);
+		char * newline = strchr(buffer,'\n');
+		*newline = 0;
+		return buffer;
+	}
 }
 
 int main() {
@@ -84,8 +142,11 @@ int main() {
 		int privacymode = ask_for_privacy_mode();
 		if (privacymode == 0) {
 			char * password = ask_for_password();
+			create_game(username,gamename,password);
+		} else {
+			create_game(username,gamename,"");
 		}
 	} else {
-		
+		join_game();
 	}
 }
