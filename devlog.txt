@@ -2,8 +2,10 @@
 ***A WORTHY TEMPLATE***
 
 felixR -- 2017-01-10 9:00
-Began looking at various ways to represnt a game of connect4, no actual coding done, only testing and proof of concept work
+Began looking at various ways to represnt a game of connect4, no actual coding done, only testing and proof of concept work.
 
 felixR -- 2017-01-11 9:00
 Began coding of game.c, the file that holds the actual connect4 game, still need to add the functions that declare winners.
 
+felixR -- 2017-01-12 10:15
+Finished the game portion of our project, the project now has a basic multiplayer game of connect4. Some additional features will still be added--and the whole thing will have to be intergrated into the lobby. 
