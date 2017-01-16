@@ -9,3 +9,6 @@ Began coding of game.c, the file that holds the actual connect4 game, still need
 
 felixR -- 2017-01-12 10:15
 Finished the game portion of our project, the project now has a basic multiplayer game of connect4. Some additional features will still be added--and the whole thing will have to be intergrated into the lobby. 
+
+felixR -- 2017-01-16 11:30 
+Created game.h and cleaned up game.c, waiting for the information transfer mechanisms to work
