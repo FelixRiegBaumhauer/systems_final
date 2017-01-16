@@ -13,21 +13,6 @@ void initialize(char board[], int x, int y){
   }
 }
 
-/*
-void print_board_old(char board[], int x, int y){
-  int i;
-  int j;
-  for(i=0; i<y; i++){
-    for(j=0; j<x; j++){
-      printf("%c",board[j+x*i]);
-    }
-    printf("\n");
-  }
-
-  printf("------------------------------\n");
-}
-*/
-
 void print_board(char board[], int x, int y){
   int i;
   int j;
@@ -40,34 +25,9 @@ void print_board(char board[], int x, int y){
 
   printf("------------------------------\n");
 }
-/*
+
+
 //target is where you want to place the chip
-int placer_old(char board[], int x, int y, int target){//, int player){
-  int i;
-  for(i=0; i<y; i++){
-    if(board[target+(x*i)] == '-'){
-
-      //printf("succ %d %d\n", i, target);
-
-
-      board[target+(4*i)] = 'o';
-*/
-      /*
-      if(player == 1){
-	board[target+(4*i)] = 'o';
-      }
-      
-      else{//if its two
-	board[target+(4*1)] = 'x';
-      }
-      */
-/*
-      return 1;//success
-    }
-  }
-  return -1;//only if row full
-}
-*/
 
 int placer(char board[], int x, int y, int target, char player_icon){
   if(target >= x){
@@ -79,15 +39,6 @@ int placer(char board[], int x, int y, int target, char player_icon){
 
       board[target+(x*i)] = player_icon;      
       
-      /*
-      //board[target+(4*i)] = player+'0';
-      if(player == 1){
-	board[target+(x*i)] = 'O';
-      }
-      if(player == 2){
-	board[target+(x*i)] = 'X';
-      }
-      */
       return 1;//success
     }
   }
@@ -182,38 +133,6 @@ int runner(int x, int y, int players){
   char icons[10] = {'O','X','@','*','$','M','W'};//seven player suppoerted currentlly
   
   initialize(board, x, y);
-  //print_board(board, x, y);
-
-
-  //Testing
-  /*
-  //player1=o
-  //player2=x
-  placer(board, x, y, 2, 1);//as of now target starts at 0
-  placer(board, x, y, 2, 1);//as of now target starts at 0
-  placer(board, x, y, 2, 1);//as of now target starts at 0
-  placer(board, x, y, 1, 2);//as of now target starts at 0
-  placer(board, x, y, 1, 2);//as of now target starts at 0
-  placer(board, x, y, 1, 1);//as of now target starts at 0
-  placer(board, x, y, 3, 2);//as of now target starts at 0
-  
-  //placer(board, x, y, 5, 1);//as of now target starts at 0
-  //placer(board, x, y, 1, 2);//as of now target starts at 0
-  print_board(board, x, y);
-  */
-
-  /*
-  char str[100];
-  
-  printf( "Enter a value :");
-  scanf("%s", str);
-  printf("%s\n", str);
-
-  int i;
-  printf( "Enter a value :");
-  scanf("%d", &i);
-  printf("%d\n", (i+1));
-  */
 
 
   printf("The Game Has Begun\n");
@@ -239,31 +158,6 @@ int runner(int x, int y, int players){
       }
     }
     
-    /*
-    printf("Player 1 move:\n");
-    printf( "Enter your move (0 for leftmost row) :");
-    scanf("%d", &input);
-    placer(board, x, y, input, 'O');
-    print_board(board, x, y);
-    //CHECK IF PLAYER 1 is WINNER
-    if(checker(board, x, y, 'O') == 1){
-      printf("PLAYER 1 has won\n");
-      return 1;//aborts the game
-    }
-
-    
-    printf("Player 2 move:\n");
-    printf( "Enter your move (0 for leftmost row) :");
-    scanf("%d", &input);
-    placer(board, x, y, input, 'X');
-    print_board(board, x, y);
-
-    //CHECK IF PLAYER 2 is WINNER
-    if(checker(board, x, y, 'X') == 1){
-      printf("PLAYER 2 has won\n");
-      return 1;//aborts the game
-    }
-    */
   }
 }
 
