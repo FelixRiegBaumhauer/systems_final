@@ -134,17 +134,26 @@ char * join_game() {
 		int notconnected = 1;
 		while (notconnected) {
 			//make sure the name they give is an actual name
-			lobbies = strchr(lobbies,'\n')
+			char * comma = strchr(lobbies,',');
+			comma = 0;
+			char * currentName;
+			strcpy(currentName,lobbies);
+			if (strcmp(currentName,buffer) == 0) {
+				notconnected = 0;
+			}
+			comma = ',';
+			lobbies = strchr(lobbies,'\n');
 		}
 		return buffer;
 	}
 }
 
 int main() {
+	char * gamename;
 	char * username = ask_for_handle();
 	int action = ask_for_action();
 	if (action == 0) {
-		char * gamename = ask_for_game_name();
+		gamename = ask_for_game_name();
 		int privacymode = ask_for_privacy_mode();
 		if (privacymode == 0) {
 			char * password = ask_for_password();
@@ -153,8 +162,9 @@ int main() {
 			create_game(username,gamename,"");
 		}
 	} else {
-		char * gamename = join_game();
+		gamename = join_game();
 	}
-	int sd = client_connect("127.0.0.1");
-	client_send(sd,gamename);
+	printf("%s",gamename);
+	//int sd = client_connect("127.0.0.1");
+	//client_send(sd,gamename);
 }
