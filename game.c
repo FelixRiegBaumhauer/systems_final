@@ -33,6 +33,7 @@ int placer(char board[], int x, int y, int target, char player_icon){
   if(target >= x){
     return -1;
   }
+  
   int i;
   for(i=0; i<y; i++){
     if(board[target+(x*i)] == '-'){
@@ -66,6 +67,11 @@ int horizontal_check(char board[], int x, int y, int xpos, int ypos, char symbol
   int pos = (y*ypos) + xpos;
 
   int connect_number=4;//hence called connect four
+
+  //this happens if it is checking on the edge
+  if( ((pos+3)/7) != (pos/7)){
+    return -1;
+  }
   
   for(inc=0; inc<connect_number; inc++){
     if(board[pos+inc] != symbol){
@@ -81,6 +87,10 @@ int up_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol){
   int pos = (y*ypos) + xpos;
 
   int connect_number=4;//hence called connect four
+
+  if( ((pos/7)+3) != ((pos+3*(x+1))/7) ){
+    return -1;
+  }
   
   for(inc=0; inc<connect_number; inc++){
     if(board[pos+inc*(y+1)] != symbol){
@@ -96,6 +106,10 @@ int down_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol
   int pos = (y*ypos) + xpos;
 
   int connect_number=4;//hence called connect four
+
+  if( ((pos/7)+3) != ((pos+3*(x-1))/7) ){
+    return -1;
+  }
   
   for(inc=0; inc<connect_number; inc++){
     if(board[pos+inc*(y-1)] != symbol){
