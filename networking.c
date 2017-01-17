@@ -1,8 +1,4 @@
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <arpa/inet.h>
+#include "networking.h"
 
 int connection_descriptor;
 
