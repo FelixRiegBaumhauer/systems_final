@@ -12,3 +12,6 @@ Finished the game portion of our project, the project now has a basic multiplaye
 
 felixR -- 2017-01-16 11:30 
 Created game.h and cleaned up game.c, waiting for the information transfer mechanisms to work
+
+felixR -- 2017-01-17 17:30 
+Fixed a bug with game, as it sometimes mistakenlly awarded victories, this was due to errors in the checke fxns
