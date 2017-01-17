@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "networking.h"
+
 //returns username
 char * ask_for_handle() {
 	printf("Please type the username you would like to use (max 12 characters) and press enter: ");
@@ -121,8 +123,7 @@ char * get_current_lobbies() {
 char * join_game() {
 	char * lobbies = get_current_lobbies();
 	if (strcmp(lobbies,"No games exist. Please create one.\n") == 0) {
-		printf("%s\n",lobbies);
-		return 0;
+		exit(0);
 	} else {
 		printf("%s\n",lobbies);
 		printf("Please type the name of the lobby you would like to join and press enter: ");
@@ -130,6 +131,11 @@ char * join_game() {
 		fgets(buffer, 12, stdin);
 		char * newline = strchr(buffer,'\n');
 		*newline = 0;
+		int notconnected = 1;
+		while (notconnected) {
+			//make sure the name they give is an actual name
+			lobbies = strchr(lobbies,'\n')
+		}
 		return buffer;
 	}
 }
@@ -147,6 +153,8 @@ int main() {
 			create_game(username,gamename,"");
 		}
 	} else {
-		join_game();
+		char * gamename = join_game();
 	}
+	int sd = client_connect("127.0.0.1");
+	client_send(sd,gamename);
 }
