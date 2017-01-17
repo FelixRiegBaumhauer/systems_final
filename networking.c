@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+int connection_descriptor;
+
 int server_connect() {
   int sd;
   int connection;
@@ -24,9 +26,7 @@ int server_connect() {
   connection = accept(sd, (struct sockaddr *)&sock1, (socklen_t *)&socklen);
 
   //now connection can be used like a file descriptor
-
-  read(connection, buffer, sizeof(buffer));
-
+  connection_descriptor = connection;
   return connection;
 }
 
@@ -46,20 +46,22 @@ int client_connect(char *serverip) {
   connect(sd, (struct sockaddr *)&sock, sizeof(sock));
 
   //now you can use sd like a file descriptor
+  connection_descriptor = sd;
   return sd;
 }
 
-int server_send(int connection, void *data) {
-  int success = write(connection, data, sizeof(data));
+int send_data(void *data) {
+  int success = write(connection_descriptor, data, sizeof(data));
   return success;
 }
 
-void * server_receive(int connection) {
+void * receive_data() {
   void * data;
-  int success = read(connection, data, 60000);
+  int success = read(connection_descriptor, data, 60000);
   return data;
 }
 
+/*
 int client_send(int connection, void * data) {
   int success = write(connection, data, sizeof(data));
   return success;
@@ -69,4 +71,4 @@ void * client_receive(int connection) {
   void * data;
   int success = read(connection, data, 60000);
   return data;
-}
+}*/
