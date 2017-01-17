@@ -79,7 +79,7 @@ void create_game(char * username, char * gamename, char * password) {
 	
 	fd = fopen("games.csv", "a");
 	
-	fwrite(string_to_write,sizeof(string_to_write),sizeof(char),fd);
+	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
 }
 
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
