@@ -11,6 +11,6 @@ int server_connect(int sd);
 int client_connect( char *host );
 
 int send_data(void *data);
-int receive_data(void *data);
+void * receive_data();
 
 #endif

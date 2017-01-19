@@ -81,7 +81,7 @@ int send_data(void *data) {
   return success;
 }
 
-int receive_data(void *data) {
+void * receive_data(void *data) {
   int success = read(connection_descript, data, 60000);
-  return success;
+  return data;
 }
