@@ -5,7 +5,7 @@
 
 #include "networking.h"
 
-void process( int sd );
+char * process();
 void sub_server( int sd );
 char * get_current_lobbies();
 void create_game(char * username, char * gamename, char * password);
@@ -24,7 +24,7 @@ int main() {
     if ( f == 0 ) {
 
       close(sd);
-      sub_server(sd);
+      sub_server(connection);
 
       exit(0);
     }
@@ -36,10 +36,8 @@ int main() {
 }
 
 
-void sub_server(sd) {
-
-	process(sd);
-
+void sub_server(connection) {
+	process(connection);
   /*char buffer[MESSAGE_BUFFER_SIZE];
   while (read( sd, buffer, sizeof(buffer) )) {
 
@@ -50,25 +48,27 @@ void sub_server(sd) {
   
 }
 char * process(sd) {
-	int * action;
+	int action;
 	char * username;
 	char * gamename;
 	char * password;
 	
 	//1. receive action (0 for create, 1 for join)
-	action = receive_data(sd);
-	if (*action == 0) {
-		receive_data(sd,username); //2. receive username
-		receive_data(sd,gamename); //3. receive gamename
-		receive_data(sd,password); //4. receive password
+	receive_data(sd,&action);
+	if (action == 0) {
+		receive_data(sd,&username); //2. receive username
+		receive_data(sd,&gamename); //3. receive gamename
+		receive_data(sd,&password); //4. receive password
 	} else {
-		send_data(sd,get_current_lobbies()); //1a. 
-		receive_data(sd,username);
-		receive_data(sd,gamename);
-		receive_data(sd,password);
+		char * lobbies = get_current_lobbies();
+		send_data(sd,&lobbies); //1a. 
+		receive_data(sd,&username);
+		receive_data(sd,&gamename);
+		receive_data(sd,&password);
 	}
 	char * ret;
-	sprintf(ret,"%s,%s,%s,%s\n",action,username,gamename,password);
+	sprintf(ret,"%d,%s,%s,%s\n",action,username,gamename,password);
+	return ret;
 }
 
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server

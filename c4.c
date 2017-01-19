@@ -18,6 +18,7 @@ char * ask_for_handle() {
 
 //returns 0 (create) or 1 (join)
 int ask_for_action() {
+	int ret;
 	char * buffer = calloc(12,sizeof(char));
 	while (strcmp(buffer,"c") != 0 && strcmp(buffer,"j") != 0) {
 		printf("Please type 'c' to create a new game, or 'j' to join an existing game and press enter: ");
@@ -43,6 +44,7 @@ char * ask_for_game_name() {
 
 //returns 0 (private) or 1 (public)
 int ask_for_privacy_mode() {
+	int ret;
 	char * buffer = calloc(12,sizeof(char));
 	while (strcmp(buffer,"private") != 0 && strcmp(buffer,"public") != 0) {
 		printf("Please type 'public' to let anyone join or 'private' to create a password and press enter: ");
@@ -99,32 +101,33 @@ int main() {
 	char * username = ask_for_handle();
 	int action = ask_for_action();
 	if (action == 0) {
+		send_data(sd,&action);
 		gamename = ask_for_game_name();
 		int privacymode = ask_for_privacy_mode();
 		char * password = "";
 		if (privacymode == 0) {
 			char * password = ask_for_password();
 		}
-		send_data(sd,&action);
-		send_data(sd,username);
-		send_data(sd,gamename);
-		send_data(sd,password);
+		send_data(sd,&username);
+		send_data(sd,&gamename);
+		send_data(sd,&password);
 		char * success_msg;
-		receive_data(sd,success_msg);
+		while 
+		receive_data(sd,&success_msg);
 		printf("%s",success_msg);
 	} else {
 		send_data(sd,&action);
 		//wait until you receive gamenames back
 		char * gamenames;
-		receive_data(sd,gamenames);
+		receive_data(sd,&gamenames);
 		char * game_to_join = join_game(gamenames);
-		send_data(sd,game_to_join);
-		send_data(sd,username);
-		send_data(sd,game_to_join);
+		send_data(sd,&game_to_join);
+		send_data(sd,&username);
+		send_data(sd,&game_to_join);
 		char * password = "";
-		send_data(sd,password);
+		send_data(sd,&password);
 		char * success_msg;
-		receive_data(sd,success_msg);
+		receive_data(sd,&success_msg);
 		printf("%s",success_msg);
 	}
 }
