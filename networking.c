@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-int connection_descript;
+//int connection_descript;
 
 void error_check( int i, char *s ) {
   if ( i < 0 ) {
@@ -50,7 +50,7 @@ int server_connect(int sd) {
   
   printf("[server] connected to %s\n", inet_ntoa( sock1.sin_addr ) );
   
-  connection_descript = connection;
+  //connection_descript = connection;
 
   return connection;
 }
@@ -71,17 +71,17 @@ int client_connect( char *host ) {
   i = connect( sd, (struct sockaddr *)&sock, sizeof(sock) );
   error_check( i, "client connect");
   
-  connection_descript = sd;
+  //connection_descript = sd;
   
   return sd;
 }
 
-int send_data(void *data) {
+int send_data(void *data, int connection_descript) {
   int success = write(connection_descript, data, sizeof(data));
   return success;
 }
 
-int receive_data(void *data) {
+int receive_data(void *data, int connection_descript) {
   int success = read(connection_descript, data, 60000);
   return success;
 }
