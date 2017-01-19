@@ -1,4 +1,4 @@
-tw#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -7,6 +7,8 @@ tw#include <stdio.h>
 
 void process( char * s );
 void sub_server( int sd );
+char * get_current_lobbies();
+void create_game(char * username, char * gamename, char * password);
 
 int main() {
 

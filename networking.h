@@ -10,7 +10,7 @@ int server_connect(int sd);
 
 int client_connect( char *host );
 
-int send_data(void *data, int connection_descript);
-int receive_data(void *data, int connection_descript);
+int send_data(int connection_descript,void *data);
+int receive_data(int connection_descript,void *data);
 
 #endif
