@@ -5,7 +5,7 @@
 
 #include "networking.h"
 
-void process( char * s );
+void process( int sd );
 void sub_server( int sd );
 char * get_current_lobbies();
 void create_game(char * username, char * gamename, char * password);
