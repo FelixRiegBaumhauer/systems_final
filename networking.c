@@ -78,11 +78,12 @@ int client_connect( char *host ) {
 
 int send_data(int connection_descript, void *data) {
   int success = write(connection_descript, data, sizeof(data));
+  printf("sent data: %p\n",data);
   return success;
 }
 
 int receive_data(int connection_descript, void *data) {
   int success = read(connection_descript, data, 60000);
-  printf("received data\n");
+  printf("received data: %p\n",data);
   return success;
 }

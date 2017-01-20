@@ -95,39 +95,94 @@ char * join_game(char * lobbies) {
 	}
 }
 
+//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
+//to call this function, and then returns the result
+char * get_current_lobbies() {
+	FILE * fd;
+	char * line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	int count = 0;
+	char * gamenames = calloc(1024,sizeof(char));
+	
+	strcat(gamenames,"Current games:\n");
+	
+	fd = fopen("games.csv", "r");
+	
+	if (fd == NULL) {
+		return "File not found.\n";
+	}
+	
+	while ((read = getline(&line, &len, fd)) != -1) {
+		strcat(gamenames,line);
+		strcat(gamenames,"\n");
+		count++;
+	}
+	
+	if (count == 0) {
+		return "No games exist. Please create one.\n";
+	}
+	
+	fclose(fd);
+	if (line) {
+		free(line);
+	}
+	
+	return gamenames;
+}
+
+//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
+//to call this function, and then returns the result
+void create_game(char * username, char * gamename, char * password) {
+	FILE * fd;
+	char * string_to_write = calloc(1024,sizeof(char));
+	
+	strcat(string_to_write,username);
+	strcat(string_to_write,",");
+	strcat(string_to_write,gamename);
+	strcat(string_to_write,",");
+	strcat(string_to_write,password);
+	strcat(string_to_write,"\n");
+	
+	fd = fopen("games.csv", "a");
+	
+	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
+}
+
 int main() {
-	int sd = client_connect("127.0.0.1");
+	int action;
+	char * username;
 	char * gamename;
-	char * username = ask_for_handle();
-	int action = ask_for_action();
+	char * password;
+
+	int sd = client_connect("127.0.0.1");
+	
+	struct game_info gminfo;
+	
+	username = ask_for_handle();
+	action = ask_for_action();
+	
 	if (action == 0) {
-		send_data(sd,&action);
 		gamename = ask_for_game_name();
 		int privacymode = ask_for_privacy_mode();
-		char * password = "";
+		password = "";
 		if (privacymode == 0) {
-			char * password = ask_for_password();
+			password = ask_for_password();
 		}
-		send_data(sd,&username);
-		send_data(sd,&gamename);
-		send_data(sd,&password);
-		char * success_msg;
-		while 
-		receive_data(sd,&success_msg);
-		printf("%s",success_msg);
 	} else {
-		send_data(sd,&action);
-		//wait until you receive gamenames back
-		char * gamenames;
-		receive_data(sd,&gamenames);
-		char * game_to_join = join_game(gamenames);
-		send_data(sd,&game_to_join);
-		send_data(sd,&username);
-		send_data(sd,&game_to_join);
-		char * password = "";
-		send_data(sd,&password);
-		char * success_msg;
-		receive_data(sd,&success_msg);
-		printf("%s",success_msg);
+		char * gamenames = get_current_lobbies();
+		gamename = join_game(gamenames);
+		password = ask_for_password();
 	}
+	
+	gminfo.action = action;
+	gminfo.username = username;
+	gminfo.gamename = gamename;
+	gminfo.password = password;
+	
+	send_data(sd,&gminfo);
+	
+	char * success_msg;
+	receive_data(sd,&success_msg);
+	printf("%s\n",success_msg);
 }

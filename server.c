@@ -48,79 +48,19 @@ void sub_server(connection) {
   
 }
 char * process(sd) {
-	int action;
-	char * username;
-	char * gamename;
-	char * password;
+	struct game_info gminfo;
+	gminfo.action = 0;
+	gminfo.username = calloc(64,sizeof(char));
+	gminfo.gamename = calloc(64,sizeof(char));
+	gminfo.password = calloc(64,sizeof(char));
+	receive_data(sd,&gminfo);
 	
-	//1. receive action (0 for create, 1 for join)
-	receive_data(sd,&action);
-	if (action == 0) {
-		receive_data(sd,&username); //2. receive username
-		receive_data(sd,&gamename); //3. receive gamename
-		receive_data(sd,&password); //4. receive password
-	} else {
-		char * lobbies = get_current_lobbies();
-		send_data(sd,&lobbies); //1a. 
-		receive_data(sd,&username);
-		receive_data(sd,&gamename);
-		receive_data(sd,&password);
-	}
 	char * ret;
-	sprintf(ret,"%d,%s,%s,%s\n",action,username,gamename,password);
+	printf("a:%d\n",gminfo.action);
+	printf("u:%s\n",gminfo.username);
+	printf("g:%s\n",gminfo.gamename);
+	printf("p:%s\n",gminfo.password);
+	sprintf(ret,"%d,%s,%s,%s\n",gminfo.action,gminfo.username,gminfo.gamename,gminfo.password);
+	send_data(sd,&ret);
 	return ret;
-}
-
-//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
-//to call this function, and then returns the result
-char * get_current_lobbies() {
-	FILE * fd;
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	int count = 0;
-	char * gamenames = calloc(1024,sizeof(char));
-	
-	strcat(gamenames,"Current games:\n");
-	
-	fd = fopen("games.csv", "r");
-	
-	if (fd == NULL) {
-		return "File not found.\n";
-	}
-	
-	while ((read = getline(&line, &len, fd)) != -1) {
-		strcat(gamenames,line);
-		strcat(gamenames,"\n");
-		count++;
-	}
-	
-	if (count == 0) {
-		return "No games exist. Please create one.\n";
-	}
-	
-	fclose(fd);
-	if (line) {
-		free(line);
-	}
-	
-	return gamenames;
-}
-
-//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
-//to call this function, and then returns the result
-void create_game(char * username, char * gamename, char * password) {
-	FILE * fd;
-	char * string_to_write = calloc(1024,sizeof(char));
-	
-	strcat(string_to_write,username);
-	strcat(string_to_write,",");
-	strcat(string_to_write,gamename);
-	strcat(string_to_write,",");
-	strcat(string_to_write,password);
-	strcat(string_to_write,"\n");
-	
-	fd = fopen("games.csv", "a");
-	
-	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
 }

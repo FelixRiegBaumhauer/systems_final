@@ -13,4 +13,11 @@ int client_connect( char *host );
 int send_data(int connection_descript,void *data);
 int receive_data(int connection_descript,void *data);
 
+struct game_info {
+	int action;
+	char * username;
+	char * gamename;
+	char * password;
+};
+
 #endif
