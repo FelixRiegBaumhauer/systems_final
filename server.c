@@ -57,6 +57,13 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	fd = open("games.txt", O_APPEND);
 	printf("fd: %d\n",fd);
 	write(fd,"hello",strlen("hello"));
+	//HELP//
+	//HELP//
+	//HELP//
+	//HELP//
+	//HELP//
+	//HELP//
+	//HELP//
 	write(fd,string_to_write,strlen(string_to_write));
 	close(fd);
 }
