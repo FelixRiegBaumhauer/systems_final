@@ -140,7 +140,6 @@ char * get_current_lobbies() {
 /*FUNCTIONS NEEDED:
 -ignores apostrophe in buffer and implements that in all the above functions
 -inside of the join_game() function, we need something that checks if the game exists at all
--function that gets the random number on the same line as the game you join (do this inside join_game)
 */
 
 int main() {
@@ -148,8 +147,6 @@ int main() {
 	char * username;
 	char * gamename;
 	char * password;
-	
-	int myGroup;
 	
 	int amILeader;
 
@@ -190,8 +187,6 @@ int main() {
 	char success_msg[64];
 	int receive = read(sd,&success_msg,sizeof(success_msg));
 	printf("success msg: %s\n",success_msg);
-	
-	read(sd,&myGroup,sizeof(myGroup));
 	
 	if (amILeader) {
 		ask_for_ready();

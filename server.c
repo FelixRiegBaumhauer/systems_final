@@ -4,6 +4,10 @@
 #include <unistd.h>
 #include <time.h>
 
+#include <sys/types.h>
+#include <sys/ipc.h> 
+#include <sys/shm.h> 
+
 #include "networking.h"
 
 void process();
@@ -57,10 +61,13 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
 }
 
+/*FUNCTIONS NEEDED:
+-function that gets the random number on the same line as the game the person is joining (if action == 1)
+*/
+
 void process(sd) {
 	struct game_info gminfo;
 	int myGroup = 0;
-	int r;
 	
 	int receive1 = read(sd,&gminfo.action,sizeof(int));
 	int receive2 = read(sd,&gminfo.username,64);
@@ -77,12 +84,11 @@ void process(sd) {
 	
 	if (gminfo.action == 0) {
 		srand(time(NULL));
-		r = rand();
-		create_game(gminfo.username,gminfo.gamename,gminfo.password,r);
-		myGroup = r;
+		myGroup = rand();
+		create_game(gminfo.username,gminfo.gamename,gminfo.password,myGroup);
 	} else {
-		r = 0; //find the random number of the group and set my group equal to it
+		//find the random number of the group and set my group equal to it
 		myGroup = 0;
 	}
-	write(sd,&r,sizeof(r));
+	sd=shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
 }
