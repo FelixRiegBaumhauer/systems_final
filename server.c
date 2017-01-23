@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <errno.h>
 
 #include <sys/types.h>
 #include <sys/ipc.h> 
@@ -44,6 +45,7 @@ int main() {
 void create_game(char * username, char * gamename, char * password, int r) {
 	FILE * fd;
 	char * string_to_write = calloc(1024,sizeof(char));
+	char * file = "games.txt";
 	
 	strcat(string_to_write,username);
 	strcat(string_to_write,",");
@@ -56,8 +58,11 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	strcat(string_to_write,rstr);
 	strcat(string_to_write,"\n");
 	
-	fd = fopen("games.csv", "a");
+	fd = fopen(file, "a+");
 	
+	if (fd == NULL) {
+		printf("[file opening] error %d: %s\n", errno, strerror(errno) );
+	}
 	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
 	fclose(fd);
 }
