@@ -18,3 +18,7 @@ Fixed a bug with game, as it sometimes mistakenlly awarded victories, this was d
 
 felixR -- 2017-01-18 18:45
 Added the basic networking files
+
+felixR -- 2017-01-23 16:55
+Fixed that issue with the writing, now we need to intergrate
+
