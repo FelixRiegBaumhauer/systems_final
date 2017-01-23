@@ -15,6 +15,7 @@ int receive_data(int connection_descript,void *data);
 
 struct game_info {
 	int action;
+	int amILeader;
 	char username[64];
 	char gamename[64];
 	char password[64];

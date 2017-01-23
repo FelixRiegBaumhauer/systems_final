@@ -128,7 +128,6 @@ int main() {
 	char * username;
 	char * gamename;
 	char * password;
-	
 	int amILeader;
 
 	int sd = client_connect("127.0.0.1");
@@ -154,6 +153,7 @@ int main() {
 	}
 	
 	gminfo.action = action;
+	gminfo.amILeader = amILeader;
 	strcpy(gminfo.username,username);
 	strcpy(gminfo.gamename,gamename);
 	strcpy(gminfo.password,password);

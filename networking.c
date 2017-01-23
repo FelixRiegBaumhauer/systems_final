@@ -22,13 +22,11 @@ void error_check( int i, char *s ) {
 }
 
 int server_setup() {
-  
   int sd;
   int i;
   
   sd = socket( AF_INET, SOCK_STREAM, 0 );
   error_check( sd, "server socket" );
-  
   struct sockaddr_in sock;
   sock.sin_family = AF_INET;
   sock.sin_addr.s_addr = INADDR_ANY;

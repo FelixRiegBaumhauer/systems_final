@@ -17,7 +17,6 @@ char * get_current_lobbies();
 void create_game(char * username, char * gamename, char * password, int r);
 
 int main() {
-
   int sd, connection;
   sd = server_setup();
   while (1) {
@@ -89,17 +88,21 @@ int get_group_num(char * gamename) {
 void process(sd) {
 	struct game_info gminfo;
 	int myGroup = 0;
-	int amILeader;
 	
 	int shmid;
 	struct shmid_ds shmid_stuff;
 	char * shm = calloc(1024,sizeof(char));
 	
 	int receive1 = read(sd,&gminfo.action,sizeof(int));
+	printf("1");
 	int receive2 = read(sd,&gminfo.username,64);
+	printf("1");
 	int receive3 = read(sd,&gminfo.gamename,64);
+	printf("1");
 	int receive4 = read(sd,&gminfo.password,64);
-	int receive5 = read(sd,&amILeader,sizeof(int));
+	printf("1");
+	int receive5 = read(sd,&gminfo.amILeader,sizeof(int));
+	printf("1");
 	
 	printf("hello");
 	if (gminfo.action == 0) {
@@ -113,7 +116,7 @@ void process(sd) {
 	
 	shm = shmat(shmid,0,0);
 	
-	if (amILeader) {
+	if (gminfo.amILeader) {
 		int waiting = read(sd,0,sizeof(int));
 		strcpy(shm,"go");
 	} else {
