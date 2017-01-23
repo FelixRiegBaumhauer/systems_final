@@ -47,12 +47,16 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	strcat(string_to_write,",");
 	strcat(string_to_write,password);
 	strcat(string_to_write,",");
-	char * rstr;
-	sprintf(rstr,"%d",r);
-	strcat(string_to_write,rstr);
+	char buffer[32];
+	snprintf(buffer,sizeof(buffer),"%d",r);
+	strcat(string_to_write,buffer);
 	strcat(string_to_write,"\n");
 	
+	printf("str %s\n",string_to_write);
+	
 	fd = open("games.txt", O_APPEND);
+	printf("fd: %d\n",fd);
+	write(fd,"hello",strlen("hello"));
 	write(fd,string_to_write,strlen(string_to_write));
 	close(fd);
 }
@@ -94,20 +98,15 @@ void process(sd) {
 	char * shm = calloc(1024,sizeof(char));
 	
 	int receive1 = read(sd,&gminfo.action,sizeof(int));
-	printf("1");
 	int receive2 = read(sd,&gminfo.username,64);
-	printf("1");
 	int receive3 = read(sd,&gminfo.gamename,64);
-	printf("1");
 	int receive4 = read(sd,&gminfo.password,64);
-	printf("1");
 	int receive5 = read(sd,&gminfo.amILeader,sizeof(int));
-	printf("1");
 	
-	printf("hello");
 	if (gminfo.action == 0) {
 		srand(time(NULL));
 		myGroup = rand();
+		printf("hello\n");
 		create_game(gminfo.username,gminfo.gamename,gminfo.password,myGroup);
 	} else {
 		myGroup = get_group_num(gminfo.gamename);
