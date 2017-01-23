@@ -12,9 +12,9 @@
 
 #include "networking.h"
 
-void process();
-char * get_current_lobbies();
-void create_game(char * username, char * gamename, char * password, int r);
+//void process();
+//char * get_current_lobbies();
+//void create_game(char * username, char * gamename, char * password, int r);
 
 int main() {
   int sd, connection;
