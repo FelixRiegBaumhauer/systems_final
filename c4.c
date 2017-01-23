@@ -137,6 +137,12 @@ char * get_current_lobbies() {
 	return gamenames;
 }
 
+/*FUNCTIONS NEEDED:
+-ignores apostrophe in buffer and implements that in all the above functions
+-inside of the join_game() function, we need something that checks if the game exists at all
+-function that gets the random number on the same line as the game you join (do this inside join_game)
+*/
+
 int main() {
 	int action;
 	char * username;
