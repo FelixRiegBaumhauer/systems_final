@@ -54,9 +54,10 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	
 	printf("str %s\n",string_to_write);
 	
-	fd = open("games.txt", O_APPEND);
+	fd = open("games.txt", O_WRONLY | O_APPEND, 0666);
 	printf("fd: %d\n",fd);
-	write(fd,"hello",strlen("hello"));
+	//write(fd,"hello",strlen("hello"));
+	
 	//HELP//
 	//HELP//
 	//HELP//
@@ -64,8 +65,14 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	//HELP//
 	//HELP//
 	//HELP//
+	char *  buff[100];
+	printf("%s\n", string_to_write);
+	//write(fd, "help\n", 5);
 	write(fd,string_to_write,strlen(string_to_write));
+	//write(fd,&string_to_write, strlen(string_to_write));
+	printf("succ_one\n");
 	close(fd);
+	printf("succ\n");
 }
 
 int get_group_num(char * gamename) {
