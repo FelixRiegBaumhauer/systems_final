@@ -105,35 +105,14 @@ char * join_game(char * lobbies) {
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
 //to call this function, and then returns the result
 char * get_current_lobbies() {
-	FILE * fd;
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
+	int fd;
 	int count = 0;
 	char * gamenames = calloc(1024,sizeof(char));
 	
 	strcat(gamenames,"Current games:\n");
 	
-	fd = fopen("games.txt", "r+");
-	
-	if (fd == NULL) {
-		return "File not found.\n";
-	}
-	
-	while ((read = getline(&line, &len, fd)) != -1) {
-		strcat(gamenames,line);
-		strcat(gamenames,"\n");
-		count++;
-	}
-	
-	if (count == 0) {
-		return "No games exist. Please create one.\n";
-	}
-	
-	fclose(fd);
-	if (line) {
-		free(line);
-	}
+	fd = open("games.txt", O_RDWR);
+	read(fd,gamenames,1024);
 	
 	return gamenames;
 }
@@ -179,17 +158,11 @@ int main() {
 	strcpy(gminfo.gamename,gamename);
 	strcpy(gminfo.password,password);
 	
-	printf("%d,%s,%s,%s\n",gminfo.action,gminfo.username,gminfo.gamename,gminfo.password);
-	
 	int sent1 = write(sd, &action, sizeof(action));
 	int sent2 = write(sd, &gminfo.username, sizeof(gminfo.username));
 	int sent3 = write(sd, &gminfo.gamename, sizeof(gminfo.gamename));
 	int sent4 = write(sd, &gminfo.password, sizeof(gminfo.password));
 	int sent5 = write(sd, &amILeader, sizeof(amILeader));
-	
-	char success_msg[64];
-	int receive = read(sd,&success_msg,sizeof(success_msg));
-	printf("success msg: %s\n",success_msg);
 	
 	if (amILeader) {
 		ask_for_ready();

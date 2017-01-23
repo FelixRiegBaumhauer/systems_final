@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #include <sys/types.h>
 #include <sys/ipc.h> 
@@ -18,16 +19,11 @@ void create_game(char * username, char * gamename, char * password, int r);
 int main() {
 
   int sd, connection;
-
   sd = server_setup();
-    
   while (1) {
-
     connection = server_connect( sd );
-
     int f = fork();
     if ( f == 0 ) {
-
       close(sd);
       process(connection);
 
@@ -43,9 +39,8 @@ int main() {
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
 //to call this function, and then returns the result
 void create_game(char * username, char * gamename, char * password, int r) {
-	FILE * fd;
-	char * string_to_write = calloc(1024,sizeof(char));
-	char * file = "games.txt";
+	int fd;
+	char string_to_write[1024];
 	
 	strcat(string_to_write,username);
 	strcat(string_to_write,",");
@@ -58,27 +53,24 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	strcat(string_to_write,rstr);
 	strcat(string_to_write,"\n");
 	
-	fd = fopen(file, "a+");
-	
-	if (fd == NULL) {
-		printf("[file opening] error %d: %s\n", errno, strerror(errno) );
-	}
-	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
-	fclose(fd);
+	fd = open("games.txt", O_APPEND);
+	write(fd,string_to_write,strlen(string_to_write));
+	close(fd);
 }
 
 int get_group_num(char * gamename) {
-	FILE * fd;
+	int fd;
 	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	int count = 0;
 	char * curGame;
 	char * groupNum;
+	char * fileContents;
 	
-	fd = fopen("games.txt", "r+");
+	fd = open("games.txt", O_RDWR);
+	read(fd,fileContents,1024);
 	
-	while ((read = getline(&line, &len, fd)) != -1) {
+	line = fileContents;
+	
+	while (line != NULL) {
 		curGame = strchr(line,',');
 		curGame++;
 		if (strncmp(gamename,curGame,strlen(gamename)) == 0) {
@@ -87,15 +79,17 @@ int get_group_num(char * gamename) {
 			groupNum++;
 			return atoi(groupNum);
 		}
-		count++;
+		line = strchr(line,'\n');
+		line++;
 	}
+	close(fd);
 	return -1;
 }
 
 void process(sd) {
 	struct game_info gminfo;
 	int myGroup = 0;
-	int amILeader = 0;
+	int amILeader;
 	
 	int shmid;
 	struct shmid_ds shmid_stuff;
@@ -107,14 +101,7 @@ void process(sd) {
 	int receive4 = read(sd,&gminfo.password,64);
 	int receive5 = read(sd,&amILeader,sizeof(int));
 	
-	char ret[128];
-	printf("a:%d\n",gminfo.action);
-	printf("u:%s\n",gminfo.username);
-	printf("g:%s\n",gminfo.gamename);
-	printf("p:%s\n",gminfo.password);
-	sprintf(ret,"%d,%s,%s,%s\n",gminfo.action,gminfo.username,gminfo.gamename,gminfo.password);
-	write(sd,&ret,sizeof(ret));
-	
+	printf("hello");
 	if (gminfo.action == 0) {
 		srand(time(NULL));
 		myGroup = rand();
