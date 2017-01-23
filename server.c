@@ -41,8 +41,10 @@ void sub_server(connection) {
 
 char * process(sd) {
 	struct game_info gminfo;
-	int receive = receive_data(sd,&gminfo);
-	printf("%d\n",receive);
+	int receive1 = receive_data(sd,&gminfo.action);
+	int receive2 = receive_data(sd,&gminfo.username);
+	int receive3 = receive_data(sd,&gminfo.gamename);
+	int receive4 = receive_data(sd,&gminfo.password);
 	
 	char * ret;
 	printf("a:%d\n",gminfo.action);

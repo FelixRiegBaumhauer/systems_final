@@ -78,12 +78,12 @@ int client_connect( char *host ) {
   return sd;
 }
 
-int send_data(int connection_descript, void *data) {
+int send_data(int connection_descript, void * data) {
   int success = write(connection_descript, data, 60000);
   return success;
 }
 
-int receive_data(int connection_descript, void *data) {
+int receive_data(int connection_descript, void * data) {
   int success = read(connection_descript, data, 60000);
   return success;
 }

@@ -182,10 +182,15 @@ int main() {
 	
 	printf("%d,%s,%s,%s\n",gminfo.action,gminfo.username,gminfo.gamename,gminfo.password);
 	
-	int sent = send_data(sd,&gminfo);
-	printf("%d\n",sent);
+	int sent1 = send_data(sd,&gminfo.action);
+	int sent2 = send_data(sd,&gminfo.username);
+	int sent3 = send_data(sd,&gminfo.gamename);
+	int sent4 = send_data(sd,&gminfo.password);
+	printf("%d\n",sent1);
+	error_check(sent1,"sending");
 	
 	char * success_msg;
-	receive_data(sd,&success_msg);
+	int receive = receive_data(sd,&success_msg);
+	error_check(receive,"receiving");
 	printf("%s\n",success_msg);
 }
