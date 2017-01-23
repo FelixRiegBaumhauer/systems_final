@@ -35,25 +35,14 @@ int main() {
   return 0;
 }
 
-
 void sub_server(connection) {
 	process(connection);
-  /*char buffer[MESSAGE_BUFFER_SIZE];
-  while (read( sd, buffer, sizeof(buffer) )) {
-
-    printf("[SERVER %d] received: %s\n", getpid(), buffer );
-    process( buffer );
-    send_data( sd, buffer);    
-  }*/
-  
 }
+
 char * process(sd) {
 	struct game_info gminfo;
-	gminfo.action = 0;
-	gminfo.username = calloc(64,sizeof(char));
-	gminfo.gamename = calloc(64,sizeof(char));
-	gminfo.password = calloc(64,sizeof(char));
-	receive_data(sd,&gminfo);
+	int receive = receive_data(sd,&gminfo);
+	printf("%d\n",receive);
 	
 	char * ret;
 	printf("a:%d\n",gminfo.action);

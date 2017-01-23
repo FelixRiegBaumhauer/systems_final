@@ -176,11 +176,14 @@ int main() {
 	}
 	
 	gminfo.action = action;
-	gminfo.username = username;
-	gminfo.gamename = gamename;
-	gminfo.password = password;
+	strcpy(gminfo.username,username);
+	strcpy(gminfo.gamename,gamename);
+	strcpy(gminfo.password,password);
 	
-	send_data(sd,&gminfo);
+	printf("%d,%s,%s,%s\n",gminfo.action,gminfo.username,gminfo.gamename,gminfo.password);
+	
+	int sent = send_data(sd,&gminfo);
+	printf("%d\n",sent);
 	
 	char * success_msg;
 	receive_data(sd,&success_msg);
