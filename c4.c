@@ -78,7 +78,7 @@ char * join_game(char * lobbies) {
 		fgets(buffer, 12, stdin);
 		char * newline = strchr(buffer,'\n');
 		*newline = 0;
-		int notconnected = 1;
+		/*int notconnected = 1;
 		while (notconnected) {
 			//make sure the name they give is an actual name
 			char * comma = strchr(lobbies,',');
@@ -90,7 +90,7 @@ char * join_game(char * lobbies) {
 			}
 			*comma = ',';
 			lobbies = strchr(lobbies,'\n');
-		}
+		}*/
 		return buffer;
 	}
 }
@@ -129,24 +129,6 @@ char * get_current_lobbies() {
 	}
 	
 	return gamenames;
-}
-
-//SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
-//to call this function, and then returns the result
-void create_game(char * username, char * gamename, char * password) {
-	FILE * fd;
-	char * string_to_write = calloc(1024,sizeof(char));
-	
-	strcat(string_to_write,username);
-	strcat(string_to_write,",");
-	strcat(string_to_write,gamename);
-	strcat(string_to_write,",");
-	strcat(string_to_write,password);
-	strcat(string_to_write,"\n");
-	
-	fd = fopen("games.csv", "a");
-	
-	fwrite(string_to_write,sizeof(char),strlen(string_to_write),fd);
 }
 
 int main() {
@@ -188,6 +170,6 @@ int main() {
 	int sent4 = write(sd, &gminfo.password, sizeof(gminfo.password));
 	
 	char success_msg[64];
-	int receive = read(sd,&success_msg,64);
+	int receive = read(sd,&success_msg,sizeof(success_msg));
 	printf("success msg: %s\n",success_msg);
 }
