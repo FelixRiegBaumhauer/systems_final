@@ -76,6 +76,7 @@ void ask_for_ready() {
 
 char * join_game(char * lobbies) {
 	if (strcmp(lobbies,"No games exist. Please create one.\n") == 0) {
+		printf("No games exist. Please create one.\n");
 		exit(0);
 	} else {
 		printf("%s\n",lobbies);
@@ -184,6 +185,7 @@ int main() {
 	int sent2 = write(sd, &gminfo.username, sizeof(gminfo.username));
 	int sent3 = write(sd, &gminfo.gamename, sizeof(gminfo.gamename));
 	int sent4 = write(sd, &gminfo.password, sizeof(gminfo.password));
+	int sent5 = write(sd, &amILeader, sizeof(amILeader));
 	
 	char success_msg[64];
 	int receive = read(sd,&success_msg,sizeof(success_msg));
@@ -191,9 +193,13 @@ int main() {
 	
 	if (amILeader) {
 		ask_for_ready();
+		int go = 1;
+		int going = write(sd, &go, sizeof(int));
 	} else {
 		printf("Waiting on the lobby leader to start the game.\n");
+		int getting = read(sd, 0, sizeof(int));
 	}
 	
+	printf("ready to go!\n");
 	
 }
