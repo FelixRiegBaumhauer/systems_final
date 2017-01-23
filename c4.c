@@ -140,6 +140,7 @@ char * get_current_lobbies() {
 /*FUNCTIONS NEEDED:
 -ignores apostrophe in buffer and implements that in all the above functions
 -inside of the join_game() function, we need something that checks if the game exists at all
+-inside get_username() check if username already exists if it does just reask until it doesnt
 */
 
 int main() {
@@ -193,4 +194,6 @@ int main() {
 	} else {
 		printf("Waiting on the lobby leader to start the game.\n");
 	}
+	
+	
 }

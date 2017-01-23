@@ -90,5 +90,5 @@ void process(sd) {
 		//find the random number of the group and set my group equal to it
 		myGroup = 0;
 	}
-	sd=shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
+	sd = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
 }
