@@ -114,7 +114,7 @@ char * get_current_lobbies() {
 	
 	strcat(gamenames,"Current games:\n");
 	
-	fd = fopen("games.csv", "r");
+	fd = fopen("games.txt", "r+");
 	
 	if (fd == NULL) {
 		return "File not found.\n";

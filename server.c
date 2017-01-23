@@ -67,9 +67,30 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	fclose(fd);
 }
 
-/*FUNCTIONS NEEDED:
--function that gets the random number on the same line as the game the person is joining (if action == 1)
-*/
+int get_group_num(char * gamename) {
+	FILE * fd;
+	char * line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	int count = 0;
+	char * curGame;
+	char * groupNum;
+	
+	fd = fopen("games.txt", "r+");
+	
+	while ((read = getline(&line, &len, fd)) != -1) {
+		curGame = strchr(line,',');
+		curGame++;
+		if (strncmp(gamename,curGame,strlen(gamename)) == 0) {
+			groupNum = strchr(curGame,',');
+			groupNum = strchr(curGame,',');
+			groupNum++;
+			return atoi(groupNum);
+		}
+		count++;
+	}
+	return -1;
+}
 
 void process(sd) {
 	struct game_info gminfo;
@@ -99,8 +120,7 @@ void process(sd) {
 		myGroup = rand();
 		create_game(gminfo.username,gminfo.gamename,gminfo.password,myGroup);
 	} else {
-		//find the random number of the group and set my group equal to it
-		myGroup = 0;
+		myGroup = get_group_num(gminfo.gamename);
 	}
 	shmid = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
 	
