@@ -186,10 +186,8 @@ int main() {
 	int sent2 = write(sd, &gminfo.username, sizeof(gminfo.username));
 	int sent3 = write(sd, &gminfo.gamename, sizeof(gminfo.gamename));
 	int sent4 = write(sd, &gminfo.password, sizeof(gminfo.password));
-	error_check(sent2,"sending");
 	
-	char * success_msg;
-	int receive = receive_data(sd,&success_msg);
-	error_check(receive,"receiving");
-	printf("%s\n",success_msg);
+	char success_msg[64];
+	int receive = read(sd,&success_msg,64);
+	printf("success msg: %s\n",success_msg);
 }

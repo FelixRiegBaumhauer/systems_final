@@ -84,6 +84,6 @@ int send_data(int connection_descript, void * data) {
 }
 
 int receive_data(int connection_descript, void * data) {
-  int success = read(connection_descript, data, 60000);
+  int success = read(connection_descript, data, 64);
   return success;
 }
