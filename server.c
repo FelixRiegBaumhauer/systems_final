@@ -40,6 +40,16 @@ int main() {
 void create_game(char * username, char * gamename, char * password, int r) {
 	int fd;
 	char string_to_write[1024];
+
+	//printf("Vital INFO: %s, %s, %s, %d\n", username, gamename, password, r);
+
+	//printf("string t wr: %s\n", string_to_write);
+
+	//this is to set everything to 0
+	int x;
+	for(x=0; x<1024; x++){
+	  string_to_write[x] = 0;
+	}
 	
 	strcat(string_to_write,username);
 	strcat(string_to_write,",");
