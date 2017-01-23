@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "networking.h"
 
 void process();
-void sub_server( int sd );
 char * get_current_lobbies();
-void create_game(char * username, char * gamename, char * password);
+void create_game(char * username, char * gamename, char * password, int r);
 
 int main() {
 
@@ -24,7 +24,7 @@ int main() {
     if ( f == 0 ) {
 
       close(sd);
-      sub_server(connection);
+      process(connection);
 
       exit(0);
     }
@@ -35,13 +35,9 @@ int main() {
   return 0;
 }
 
-void sub_server(connection) {
-	process(connection);
-}
-
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
 //to call this function, and then returns the result
-void create_game(char * username, char * gamename, char * password) {
+void create_game(char * username, char * gamename, char * password, int r) {
 	FILE * fd;
 	char * string_to_write = calloc(1024,sizeof(char));
 	
@@ -50,6 +46,10 @@ void create_game(char * username, char * gamename, char * password) {
 	strcat(string_to_write,gamename);
 	strcat(string_to_write,",");
 	strcat(string_to_write,password);
+	strcat(string_to_write,",");
+	char * rstr;
+	sprintf(rstr,"%d",r);
+	strcat(string_to_write,rstr);
 	strcat(string_to_write,"\n");
 	
 	fd = fopen("games.csv", "a");
@@ -59,6 +59,8 @@ void create_game(char * username, char * gamename, char * password) {
 
 void process(sd) {
 	struct game_info gminfo;
+	int myGroup = 0;
+	int r;
 	
 	int receive1 = read(sd,&gminfo.action,sizeof(int));
 	int receive2 = read(sd,&gminfo.username,64);
@@ -74,6 +76,13 @@ void process(sd) {
 	write(sd,&ret,sizeof(ret));
 	
 	if (gminfo.action == 0) {
-		create_game(gminfo.username,gminfo.gamename,gminfo.password);
+		srand(time(NULL));
+		r = rand();
+		create_game(gminfo.username,gminfo.gamename,gminfo.password,r);
+		myGroup = r;
+	} else {
+		r = 0; //find the random number of the group and set my group equal to it
+		myGroup = 0;
 	}
+	write(sd,&r,sizeof(r));
 }

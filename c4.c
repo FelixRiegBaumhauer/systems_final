@@ -68,6 +68,12 @@ char * ask_for_password() {
 	return buffer;
 }
 
+void ask_for_ready() {
+	printf("Type anything when you're ready to start the game.");
+	char * buffer = calloc(12,sizeof(char));
+  	fgets(buffer, 12, stdin);
+}
+
 char * join_game(char * lobbies) {
 	if (strcmp(lobbies,"No games exist. Please create one.\n") == 0) {
 		exit(0);
@@ -136,6 +142,10 @@ int main() {
 	char * username;
 	char * gamename;
 	char * password;
+	
+	int myGroup;
+	
+	int amILeader;
 
 	int sd = client_connect("127.0.0.1");
 	
@@ -151,10 +161,12 @@ int main() {
 		if (privacymode == 0) {
 			password = ask_for_password();
 		}
+		amILeader = 1;
 	} else {
 		char * gamenames = get_current_lobbies();
 		gamename = join_game(gamenames);
 		password = ask_for_password();
+		amILeader = 0;
 	}
 	
 	gminfo.action = action;
@@ -172,4 +184,12 @@ int main() {
 	char success_msg[64];
 	int receive = read(sd,&success_msg,sizeof(success_msg));
 	printf("success msg: %s\n",success_msg);
+	
+	read(sd,&myGroup,sizeof(myGroup));
+	
+	if (amILeader) {
+		ask_for_ready();
+	} else {
+		printf("Waiting on the lobby leader to start the game.\n");
+	}
 }
