@@ -40,7 +40,13 @@ void sub_server(connection) {
 }
 
 char * process(sd) {
+	int action;
+	char * username;
+	char * gamename;
+	char * password;
+	
 	struct game_info gminfo;
+	
 	int receive1 = receive_data(sd,&gminfo.action);
 	int receive2 = receive_data(sd,&gminfo.username);
 	int receive3 = receive_data(sd,&gminfo.gamename);
