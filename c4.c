@@ -239,6 +239,7 @@ int main() {
 	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
 	    read(sd,&buffer,sizeof(buffer));
 	  }
+	  printf("%s\n",buffer);
 	  if (strncmp(buffer,"0",1) == 0) {
 	    turn = 0;
 	  } else {
@@ -247,33 +248,30 @@ int main() {
 	  strcpy(buffer,strchr(buffer,'\n')+1);
 	  if (turn == 0) {
 	    if (gminfo.amILeader == 0) {
-	      printf("1!\n");
 	      print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
-	      printf("2!\n");
 	      print_board(buffer,7,7);
 	      printf("Waiting for other player to move.\n");
 	    }
 	  }
 	  else if (turn == 1) {
 	    if (gminfo.amILeader == 1) {
-	      printf("3!\n");
 	      print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
-	      printf("4!\n");
 	      print_board(buffer,7,7);
 	      printf("Waiting for other player to move.\n");
 	    }
 	  }
 	}
 	printf("%s\n",buffer);
+	close(sd);
 	exit(0);
 }
