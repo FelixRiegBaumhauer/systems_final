@@ -156,6 +156,19 @@ char * stripApostrophes(char *input) {
   //return "asdf";
 }
 
+void print_board(char board[], int x, int y){
+  int i;
+  int j;
+  for(i=(y-1); i>=0; i--){
+    for(j=0; j<x; j++){
+      printf("%c",board[j+x*i]);
+    }
+    printf("\n");
+  }
+
+  printf("-------------------------\n");
+}
+
 int main() {
         char *lol = "i'm s'o w'e'a'k";
         char *lolz = stripApostrophes(lol);
@@ -220,7 +233,7 @@ int main() {
 	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
 	    read(sd,&buffer,sizeof(buffer));
 	  }
-	  printf("%s\n",buffer);
+	  print_board(buffer,7,7);
 	  if (strncmp(buffer,"0",1)) {
 	    if (gminfo.amILeader == 0) {
 	      char * move = make_move();

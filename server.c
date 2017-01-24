@@ -22,22 +22,6 @@ void initialize(char board[], int x, int y){
   }
 }
 
-char * get_board(char board[], int x, int y){
-  char * ret = calloc(strlen(board),sizeof(char));
-  int i;
-  int j;
-  for(i=(y-1); i>=0; i--){
-    for(j=0; j<x; j++){
-      strcat(ret,&board[j+x*i]);
-    }
-    strcat(ret,"\n");
-  }
-
-  strcat(ret,"------------------------------\n");
-  return ret;
-}
-
-
 int placer(char board[], int x, int y, int target, char player_icon){
   if(target >= x){
     return -1;
@@ -295,7 +279,7 @@ void process(int sd) {
 	  } else {
 	    strcpy(buffer,"0\n");
 	  }
-	  strcat(buffer,get_board(shm2,7,7));
+	  strcat(buffer,*shm2);
 	  write(sd,&buffer,sizeof(buffer));
 	  if (*shm == 1) {
 	    if (gminfo.amILeader == 1) {
