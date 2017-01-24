@@ -314,8 +314,9 @@ void process(int sd) {
 	    }
 	  }
 	}
-	write(sd,&buffer,sizeof(buffer));
 	strcpy(buffer,"Game over!\n");
+	write(sd,&buffer,sizeof(buffer));
+	strcpy(buffer,shm2);
 	write(sd,&buffer,sizeof(buffer));
 }
  

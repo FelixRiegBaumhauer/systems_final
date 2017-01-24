@@ -236,8 +236,11 @@ int main() {
 	int turn = 0;
 	
 	while (strcmp(buffer,"Game over!\n") != 0) {
-	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
+	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1) != 0 && strcmp(buffer,"Game over!\n") != 0) {
 	    read(sd,&buffer,sizeof(buffer));
+	  }
+	  if (strcmp(buffer,"Game over!\n") == 0) {
+	    break;
 	  }
 	  if (strncmp(buffer,"0",1) == 0) {
 	    turn = 0;
@@ -270,6 +273,8 @@ int main() {
 	    }
 	  }
 	}
+	read(sd,&buffer,sizeof(buffer));
+	print_board(buffer,7,7);
 	printf("Game over!\n");
 	close(sd);
 	exit(0);
