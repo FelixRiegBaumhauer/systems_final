@@ -12,6 +12,8 @@
 
 #include "networking.h"
 
+//server.c, the server file. It amkes sure that the two distant comuters can talk to each other.
+
 void initialize(char board[], int x, int y){
   int i;
   int j;

@@ -6,6 +6,8 @@
 
 #include "networking.h"
 
+//c4 is our client, this is how the user interacts with the server and as a result the other users
+
 //returns username
 char * ask_for_handle() {
 	printf("Please type the username you would like to use (max 12 characters) and press enter: ");

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+//game.c, this is the file that holds the functions that manipulates the game board
+
 void initialize(char board[], int x, int y){
   int i;
   int j;

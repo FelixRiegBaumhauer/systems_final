@@ -12,6 +12,8 @@
 #include "networking.h"
 
 
+//networking.c, it networks
+
 //int connection_descript;
 
 void error_check( int i, char *s ) {
