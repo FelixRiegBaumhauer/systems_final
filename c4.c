@@ -68,6 +68,15 @@ char * ask_for_password() {
 	return buffer;
 }
 
+char * ask_for_password_joining() {
+	printf("Please type the password of the lobby: ");
+	char * buffer = calloc(12,sizeof(char));
+  	fgets(buffer, 12, stdin);
+	char * newline = strchr(buffer,'\n');
+	*newline = 0;
+	return buffer;
+}
+
 void ask_for_ready() {
 	printf("Type anything when you're ready to start the game.");
 	char * buffer = calloc(12,sizeof(char));
@@ -148,7 +157,7 @@ int main() {
 	} else {
 		char * gamenames = get_current_lobbies();
 		gamename = join_game(gamenames);
-		password = ask_for_password();
+		password = ask_for_password_joining();
 		amILeader = 0;
 	}
 	
@@ -167,12 +176,16 @@ int main() {
 	if (amILeader) {
 		ask_for_ready();
 		int go = 1;
-		int going = write(sd, &go, sizeof(int));
+		write(sd, &go, sizeof(int));
 	} else {
 		printf("Waiting on the lobby leader to start the game.\n");
-		int getting = read(sd, 0, sizeof(int));
+		int getting; 
+		while (getting != 1) {
+			read(sd,&getting,sizeof(int));
+		}
 	}
 	
-	printf("ready to go!\n");
+	printf("Ready to go!\n");
+	
 	
 }

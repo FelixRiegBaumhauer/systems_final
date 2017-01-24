@@ -12,7 +12,7 @@
 
 #include "networking.h"
 
-//void process();
+void process(int sd);
 //char * get_current_lobbies();
 //void create_game(char * username, char * gamename, char * password, int r);
 
@@ -40,12 +40,6 @@ int main() {
 void create_game(char * username, char * gamename, char * password, int r) {
 	int fd;
 	char string_to_write[1024];
-
-	//printf("Vital INFO: %s, %s, %s, %d\n", username, gamename, password, r);
-
-	//printf("string t wr: %s\n", string_to_write);
-
-	//this is to set everything to 0
 	int x;
 	for(x=0; x<1024; x++){
 	  string_to_write[x] = 0;
@@ -62,48 +56,30 @@ void create_game(char * username, char * gamename, char * password, int r) {
 	strcat(string_to_write,buffer);
 	strcat(string_to_write,"\n");
 	
-	printf("str %s\n",string_to_write);
-	
 	fd = open("games.txt", O_WRONLY | O_APPEND, 0666);
-	printf("fd: %d\n",fd);
-	//write(fd,"hello",strlen("hello"));
-	
-	//HELP//
-	//HELP//
-	//HELP//
-	//HELP//
-	//HELP//
-	//HELP//
-	//HELP//
 	char *  buff[100];
-	printf("%s\n", string_to_write);
-	//write(fd, "help\n", 5);
 	write(fd,string_to_write,strlen(string_to_write));
-	//write(fd,&string_to_write, strlen(string_to_write));
-	printf("succ_one\n");
 	close(fd);
-	printf("succ\n");
 }
 
 int get_group_num(char * gamename) {
 	int fd;
-	char * line = NULL;
-	char * curGame;
+	char * line = calloc(4096,sizeof(char));
 	char * groupNum;
-	char * fileContents;
+	char * curGame;
 	
 	fd = open("games.txt", O_RDWR);
-	read(fd,fileContents,1024);
-	
-	line = fileContents;
-	
+	read(fd,line,4096);
 	while (line != NULL) {
 		curGame = strchr(line,',');
 		curGame++;
 		if (strncmp(gamename,curGame,strlen(gamename)) == 0) {
 			groupNum = strchr(curGame,',');
-			groupNum = strchr(curGame,',');
 			groupNum++;
+			groupNum = strchr(groupNum,',');
+			groupNum++;
+			char * endNum = strchr(groupNum,'\n');
+			endNum = 0;
 			return atoi(groupNum);
 		}
 		line = strchr(line,'\n');
@@ -130,20 +106,25 @@ void process(sd) {
 	if (gminfo.action == 0) {
 		srand(time(NULL));
 		myGroup = rand();
-		printf("hello\n");
 		create_game(gminfo.username,gminfo.gamename,gminfo.password,myGroup);
 	} else {
 		myGroup = get_group_num(gminfo.gamename);
 	}
+	
 	shmid = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
 	
 	shm = shmat(shmid,0,0);
 	
+	strcpy(shm,"asdf\n");
+	
 	if (gminfo.amILeader) {
-		int waiting = read(sd,0,sizeof(int));
-		strcpy(shm,"go");
+		int waiting;
+		while (waiting != 1) {
+			read(sd,&waiting,sizeof(int));
+		}
+		strcpy(shm,"go\n");
 	} else {
-		while (strcmp(shm,"go") != 0) {}
+		while (strcmp(shm,"go\n") != 0) {}
 		int go = 1;
 		int going = write(sd,&go,sizeof(int));
 	}
