@@ -31,7 +31,8 @@ FELIX RIEG-BAUMHAUER, NOAH FICHTER, SEBASTAIN CAIN
 12. Now proceed to play connect4, remeber this is a CS class, so we start with 0 on the left side.
 
 Notes:
-If you area luddite, and would preffer to not use the interwebs to connect with a connect 4 partner, the "$make" command also creates exec file game, if you run, "$./game", you will be able to play connect four locally on your own machine. It is the same game as the one being beamed across the internet.
+-ALthough it may irk some of the skilled vidoe game players in this class, our program has some intentional lag. If you eneter a value, give the computer 5 seconds or so, the screen should update as desired.
+-If you area luddite, and would preffer to not use the interwebs to connect with a connect 4 partner, the "$make" command also creates exec file game, if you run, "$./game", you will be able to play connect four locally on your own machine. It is the same game as the one being beamed across the internet.
 
 
 Dropped Features:
