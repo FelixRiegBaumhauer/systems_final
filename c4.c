@@ -217,15 +217,25 @@ int main() {
 	char buffer[1024];
 	
 	while (strcmp(buffer,"Game over!\n") != 0) {
-	  read(sd,&buffer,sizeof(buffer));
-	  if (strcmp(buffer,"Waiting for other player(s).\n") == 0) {
-	    printf("%s",buffer);
-	    sleep(5);
-	  } else {
-	    printf("%s\n",buffer);
-	    char * move = make_move();
-	    strcpy(buffer,move);
-	    write(sd,&buffer,sizeof(buffer));
+	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
+	    read(sd,&buffer,sizeof(buffer));
+	  }
+	  printf("%s\n",buffer);
+	  if (strncmp(buffer,"0",1)) {
+	    if (gminfo.amILeader == 0) {
+	      char * move = make_move();
+	      strcpy(buffer,move);
+	    } else {
+	      printf("Waiting for other player to move.\n");
+	    }
+	  }
+	  else if (strncmp(buffer,"1",1)) {
+	    if (gminfo.amILeader == 1) {
+	      char * move = make_move();
+	      strcpy(buffer,move);
+	    } else {
+	      printf("Waiting for other player to move.\n");
+	    }
 	  }
 	}
 	printf("%s\n",buffer);

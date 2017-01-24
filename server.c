@@ -289,20 +289,31 @@ void process(int sd) {
 
 	char buffer[1024];
 	char icons[10] = {'O','X','@','*','$','M','W'};
-	while (checker(shm2,7,7,icons[0]) != -1 && checker(shm2,7,7,icons[1])) {
-		while (*shm != gminfo.amILeader) {
-		  strcpy(buffer,"Waiting for other player(s).\n");
-		  write(sd,&buffer,sizeof(buffer));
-		  sleep(5);
-		}
-		strcpy(buffer,get_board(shm2,7,7));
-		write(sd,&buffer,sizeof(buffer));
+	while (checker(shm2,7,7,icons[0]) == -1 && checker(shm2,7,7,icons[1]) == -1) {
+	  if (*shm == 1) {
+	    strcpy(buffer,"1\n");
+	  } else {
+	    strcpy(buffer,"0\n");
+	  }
+	  strcat(buffer,get_board(shm2,7,7));
+	  write(sd,&buffer,sizeof(buffer));
+	  if (*shm == 1) {
+	    if (gminfo.amILeader == 1) {
+	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
-		if (*shm == 1) {
-		  *shm = 0;
-		} else {
-		  *shm = 1;
-		}
+	      }
+	    }
+	    *shm = 0;
+	  } else {
+	    if (gminfo.amILeader == 0) {
+	      while (strncmp(buffer,"move",4)) {
+		read(sd,&buffer,sizeof(buffer));
+	      }
+	    }
+	    *shm = 1;
+	  }
 	}
+	strcpy(buffer,"Game over!\n");
+	write(sd,&buffer,sizeof(buffer));
 }
  
