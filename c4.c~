@@ -141,9 +141,8 @@ char * stripApostrophes(char *input) {
     printf("run");
     char *loc = strchr(final, '\'');
     //printf("%s", loc);
-    *loc = 0;
-    loc++;
-    strcat(final, loc);
+    //loc[0] = 0;
+    //strcat(final, &loc[1]);
   }
   return final;
   //return "asdf";
