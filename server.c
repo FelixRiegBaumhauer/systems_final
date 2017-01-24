@@ -279,7 +279,7 @@ void process(int sd) {
 	  } else {
 	    strcpy(buffer,"0\n");
 	  }
-	  strcat(buffer,*shm2);
+	  strcat(buffer,shm2);
 	  write(sd,&buffer,sizeof(buffer));
 	  if (*shm == 1) {
 	    if (gminfo.amILeader == 1) {

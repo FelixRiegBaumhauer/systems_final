@@ -232,11 +232,9 @@ int main() {
 	while (strcmp(buffer,"Game over!\n") != 0) {
 	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
 	    read(sd,&buffer,sizeof(buffer));
-	    printf("%s\n",buffer);
 	    sleep(1);
 	  }
 	  strcpy(buffer,strchr(buffer,'\n')+1);
-	  printf("%s\n",buffer);
 	  print_board(buffer,7,7);
 	  if (strncmp(buffer,"0",1)) {
 	    if (gminfo.amILeader == 0) {
