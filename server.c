@@ -273,6 +273,9 @@ void process(int sd) {
 	}
 
 	char buffer[1024];
+	for (int i = 0; i < 1024; i++) {
+	  buffer[i] = 0;
+	}
 	char icons[10] = {'O','X','@','*','$','M','W'};
 	int new;
 	while (checker(shm2,7,7,icons[0]) == -1 && checker(shm2,7,7,icons[1]) == -1) {
@@ -283,12 +286,17 @@ void process(int sd) {
 	    strcpy(buffer,"0\n");
 	  }
 	  strcat(buffer,shm2);
+	  printf("board: %s\n",buffer);
+	  sleep(1);
 	  write(sd,&buffer,sizeof(buffer));
+	  printf("ok?\n");
 	  if (*shm == 1) {
 	    if (gminfo.amILeader == 1) {
+	      printf("before1a\n");
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      printf("move1a: %s\n",buffer);
 	      char * num = strchr(buffer,':');
 	      num++;
 	      char * newl = strchr(num,'\n');
@@ -296,16 +304,20 @@ void process(int sd) {
 	      placer(shm2,7,7,atoi(num),icons[1]);
 	      new = 0;
 	    } else {
+	      printf("before1b\n");
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      printf("move1: %s\n",buffer);
 	      new = 0;
 	    }
 	  } else {
 	    if (gminfo.amILeader == 0) {
+	      printf("before2a\n");
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      printf("move2a: %s\n",buffer);
 	      char * num = strchr(buffer,':');
 	      num++;
 	      char * newl = strchr(num,'\n');
@@ -313,9 +325,11 @@ void process(int sd) {
 	      placer(shm2,7,7,atoi(num),icons[0]);
 	      new = 1;
 	    } else {
+	      printf("before2b\n");
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      printf("move2: %s\n",buffer);
 	      new = 1;
 	    }
 	  }
