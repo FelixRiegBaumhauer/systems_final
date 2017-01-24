@@ -170,9 +170,9 @@ void print_board(char board[], int x, int y){
 }
 
 int main() {
-        char *lol = "i'm s'o w'e'a'k";
-        char *lolz = stripApostrophes(lol);
-        printf("%s", lolz);
+  //char *lol = "i'm s'o w'e'a'k";
+        //char *lolz = stripApostrophes(lol);
+        //printf("%s", lolz);
 	int action;
 	char * username;
 	char * gamename;
