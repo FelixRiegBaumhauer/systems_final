@@ -111,6 +111,13 @@ char * join_game(char * lobbies) {
 	}
 }
 
+char * make_move() {
+  printf("Make a move.\n");
+  char * buffer = calloc(1024,sizeof(char));
+  fgets(buffer, 1024, stdin);
+  return buffer;
+}
+
 //SERVER FUNCTION, games.csv IS A SERVER ONLY FILE --> need a function that asks the server
 //to call this function, and then returns the result
 char * get_current_lobbies() {
@@ -138,8 +145,6 @@ int main() {
 	char * gamename;
 	char * password;
 	int amILeader;
-
-	char icons[10] = {'O','X','@','*','$','M','W'};
 
 	int sd = client_connect("127.0.0.1");
 	
@@ -186,6 +191,22 @@ int main() {
 			read(sd,&getting,sizeof(int));
 		}
 	}
-	
+
 	printf("Ready to go!\n");
+	
+	char buffer[1024];
+	
+	while (strcmp(buffer,"Game over!\n") != 0) {
+	  read(sd,&buffer,sizeof(buffer));
+	  if (strcmp(buffer,"Waiting for other player(s).\n")) {
+	    printf("%s\n",buffer);
+	    sleep(5);
+	  } else {
+	    printf("%s\n",buffer);
+	    strcpy(buffer,make_move());
+	    write(sd,&buffer,sizeof(buffer));
+	  }
+	}
+	printf("%s\n",buffer);
+	exit(0);
 }

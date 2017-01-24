@@ -7,23 +7,25 @@ void initialize(char board[], int x, int y){
   int i;
   int j;
   for(i=0; i<y; i++){
-    for(j=0; j<x; j++){
+    for(0; j<x; j++){
       board[(j+x*i)]='-';
     }
   }
 }
 
-void print_board(char board[], int x, int y){
+char * get_board(char board[], int x, int y){
+  char ret[strlen(board)];
   int i;
   int j;
   for(i=(y-1); i>=0; i--){
     for(j=0; j<x; j++){
-      printf("%c ",board[j+x*i]);
+      strcat(ret,board[j+x*i]);
     }
-    printf("\n");
+    strcat(ret,"\n");
   }
 
-  printf("------------------------------\n");
+  strcat(ret,"------------------------------\n");
+  return ret;
 }
 
 
@@ -176,7 +178,7 @@ int runner(int x, int y, int players){
 }
 
 int main(){
-  int x = 7;
+  /*int x = 7;
   int y = 7;
 
   int num_p;
@@ -185,6 +187,6 @@ int main(){
   scanf("%d", &num_p);
   
   
-  runner(x,y, num_p);
+  runner(x,y, num_p);*/
   return 0;
 }

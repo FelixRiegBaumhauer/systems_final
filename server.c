@@ -11,7 +11,144 @@
 #include <sys/shm.h> 
 
 #include "networking.h"
-#include "game.h"
+
+void initialize(char board[], int x, int y){
+  int i;
+  int j;
+  for(i=0; i<y; i++){
+    for(0; j<x; j++){
+      board[(j+x*i)]='-';
+    }
+  }
+}
+
+char * get_board(char board[], int x, int y){
+  char * ret = calloc(strlen(board),sizeof(char));
+  int i;
+  int j;
+  for(i=(y-1); i>=0; i--){
+    for(j=0; j<x; j++){
+      strcat(ret,&board[j+x*i]);
+    }
+    strcat(ret,"\n");
+  }
+
+  strcat(ret,"------------------------------\n");
+  return ret;
+}
+
+
+int placer(char board[], int x, int y, int target, char player_icon){
+  if(target >= x){
+    return -1;
+  }
+  
+  int i;
+  for(i=0; i<y; i++){
+    if(board[target+(x*i)] == '-'){
+
+      board[target+(x*i)] = player_icon;      
+      
+      return 1;//success
+    }
+  }
+  return -1;//only if row full
+}
+
+
+int vertical_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+(inc*y)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+
+int horizontal_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+
+  //this happens if it is checking on the edge
+  if( ((pos+3)/7) != (pos/7)){
+    return -1;
+  }
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+//right and up
+int up_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+
+  if( ((pos/7)+3) != ((pos+3*(x+1))/7) ){
+    return -1;
+  }
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc*(y+1)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+//right and down
+int down_slant_check(char board[], int x, int y, int xpos, int ypos, char symbol){
+  int inc;
+  int pos = (y*ypos) + xpos;
+
+  int connect_number=4;//hence called connect four
+
+  if( ((pos/7)+3) != ((pos+3*(x-1))/7) ){
+    return -1;
+  }
+  
+  for(inc=0; inc<connect_number; inc++){
+    if(board[pos+inc*(y-1)] != symbol){
+      return -1;
+    }
+  }
+  return 1;
+}
+
+int checker(char board[], int x, int y, char symbol){
+  int i;
+  int j;
+  for(i=0; i<y; i++){
+    for(j=0; j<x; j++){
+      if(vertical_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(horizontal_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(up_slant_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+      if(down_slant_check(board, x, y, j, i, symbol) == 1){
+	return 1;
+      }
+    }
+  }
+  return -1;//if true
+}
 
 void process(int sd);
 //char * get_current_lobbies();
@@ -90,7 +227,7 @@ int get_group_num(char * gamename) {
 	return -1;
 }
 
-void process(sd) {
+void process(int sd) {
 	struct game_info gminfo;
 	int myGroup = 0;
 	
@@ -125,34 +262,46 @@ void process(sd) {
 	
 	//1: leader, 0: not leader
 	shmid = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
-	shm = shmat(shmid,0,0);
-	
-	strcpy(shm,"asdf\n");
+	shm = (int *)shmat(shmid,0,0);
 	
 	shmid2 = shmget(ftok("makefile", myGroup+1), 1024, IPC_CREAT|0644);
-	shm2 = shmat(shmid2,0,0);
+	shm2 = (char *)shmat(shmid2,0,0);
 	
 	shmid3 = shmget(ftok("makefile", myGroup+2), 1024, IPC_CREAT|0644);
-	shm3 = shmat(shmid3,0,0);
+	shm3 = (char *)shmat(shmid3,0,0);
+	
+	strcpy(shm3,"asdf\n");
 	
 	if (gminfo.amILeader) {
 		int waiting;
 		while (waiting != 1) {
 			read(sd,&waiting,sizeof(int));
 		}
-		strcpy(shm,"go\n");
+		strcpy(shm3,"go\n");
 		char board[49];
 		initialize(board,7,7);
 		strcpy(shm2,board);
 	} else {
-		while (strcmp(shm,"go\n") != 0) {}
+		while (strcmp(shm3,"go\n") != 0) {}
 		int go = 1;
 		int going = write(sd,&go,sizeof(int));
 	}
-	
-	while (checker(shm2,7,7) != -1) {
-		while (*shm1 != amILeader) {
-			time.sleep(5);
+
+	char buffer[1024];
+	char icons[10] = {'O','X','@','*','$','M','W'};
+	while (checker(shm2,7,7,icons[0]) != -1 && checker(shm2,7,7,icons[1])) {
+		while (*shm != gminfo.amILeader) {
+		  strcpy(buffer,"Waiting for other player(s).\n");
+		  write(sd,&buffer,sizeof(buffer));
+		  sleep(5);
+		}
+		strcpy(buffer,get_board(shm2,7,7));
+		write(sd,&buffer,sizeof(buffer));
+		read(sd,&buffer,sizeof(buffer));
+		if (*shm == 1) {
+		  *shm = 0;
+		} else {
+		  *shm = 1;
 		}
 	}
 }
