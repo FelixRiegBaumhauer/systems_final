@@ -218,12 +218,13 @@ int main() {
 	
 	while (strcmp(buffer,"Game over!\n") != 0) {
 	  read(sd,&buffer,sizeof(buffer));
-	  if (strcmp(buffer,"Waiting for other player(s).\n")) {
-	    printf("%s\n",buffer);
+	  if (strcmp(buffer,"Waiting for other player(s).\n") == 0) {
+	    printf("%s",buffer);
 	    sleep(5);
 	  } else {
 	    printf("%s\n",buffer);
-	    strcpy(buffer,make_move());
+	    char * move = make_move();
+	    strcpy(buffer,move);
 	    write(sd,&buffer,sizeof(buffer));
 	  }
 	}
