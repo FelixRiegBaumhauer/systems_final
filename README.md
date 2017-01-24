@@ -5,6 +5,7 @@ team: "get back to us"
 FELIX RIEG-BAUMHAUER, NOAH FICHTER, SEBASTAIN CAIN
 
 -Instructions:
+
 1. Use the makefile to compile the project
 
 2. Open up three termainal windows, one three differing computers, one of them must be bart
@@ -29,17 +30,21 @@ FELIX RIEG-BAUMHAUER, NOAH FICHTER, SEBASTAIN CAIN
 
 12. Now proceed to play connect4.
 
+Notes:
+If you area luddite, and would preffer to not use the interwebs to connect with a connect 4 partner, the "$make" command also creates game.c, if you run, "$./game", you will be able to play connect four locally on your own machine. It is the same game as the one being beamed across the internet.
+
+
 Bugs:
 
 Dropped Features:
-Due to time constarints.
--Password protected games
--non 2 dimensional multiplayer
+Due to time issues.
+-Password protected games (the password functionallity in our game does not really exist)
+-non 2 dimensional multiplayer 
 -GUI
 
 -Purpose: 
 online connect four
-This project exists for those individuals who have a strong urge to play connect four with a distant friend. In this case, the user is to eneter their friends IP address and begin playing with their friend.
+This project exists for those individuals who have a strong urge to play connect four with a distant friend. In this case, the user is to eneter the IP address of a common server (ie a third friend who is the odd man out) and begin playing with their (more important) friend.
 
 -Programs needed to be intalled to run project:
 NONE
