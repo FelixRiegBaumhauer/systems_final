@@ -18,7 +18,7 @@ FELIX RIEG-BAUMHAUER, NOAH FICHTER, SEBASTAIN CAIN
 
 6. Run c4 by typing: $./c4--you will be asked to enter the IP address of a computer that is running the server. That computer must allready be running the server.
 
-7. Follow the on screen intrstructions, create a username.
+7. Follow the on screen intrstructions, create a username, we would stronglly encourge the user to make their games public, as the private functionallity is rather undredevolped.
 
 8. If want to create a game (one of two compuetrs will have to create one), type c, if you want to join a game type j.
 
