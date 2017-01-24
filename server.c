@@ -247,7 +247,8 @@ void process(int sd) {
 	//1: leader, 0: not leader
 	shmid = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
 	shm = (int *)shmat(shmid,0,0);
-	
+    //*shm = 0;
+    
 	shmid2 = shmget(ftok("makefile", myGroup+1), 1024, IPC_CREAT|0644);
 	shm2 = (char *)shmat(shmid2,0,0);
 	

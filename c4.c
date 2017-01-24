@@ -235,31 +235,39 @@ int main() {
 	    sleep(1);
 	  }
 	  strcpy(buffer,strchr(buffer,'\n')+1);
-	  print_board(buffer,7,7);
+      printf("buffer[0] %d", buffer[0]);
 	  if (strncmp(buffer,"0",1)) {
 	    if (gminfo.amILeader == 0) {
+          print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
-	      while (strncmp(buffer,"1",1) != 0) {
-		read(sd,&buffer,sizeof(buffer));
-		sleep(1);
+	      while (1) {
+            read(sd,&buffer,sizeof(buffer));
+            if (strncmp(buffer,"1",1) == 0) {
+              break;
+            }
+            sleep(1);
 	      }
 	    }
 	  }
 	  else if (strncmp(buffer,"1",1)) {
 	    if (gminfo.amILeader == 1) {
+          print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
-	      while (strncmp(buffer,"0",1) != 0) {
-		read(sd,&buffer,sizeof(buffer));
+          while (1) {
+            read(sd,&buffer,sizeof(buffer));
+            if (strncmp(buffer,"0",1) == 0) {
+              break;
+            }
 		sleep(1);
 	      }
 	    }

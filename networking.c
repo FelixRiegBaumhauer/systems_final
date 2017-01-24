@@ -30,7 +30,7 @@ int server_setup() {
   struct sockaddr_in sock;
   sock.sin_family = AF_INET;
   sock.sin_addr.s_addr = INADDR_ANY;
-  sock.sin_port = htons(9001);
+  sock.sin_port = htons(9002);
   i = bind( sd, (struct sockaddr *)&sock, sizeof(sock) );
   error_check( i, "server bind" );
   
@@ -65,7 +65,7 @@ int client_connect( char *host ) {
   struct sockaddr_in sock;
   sock.sin_family = AF_INET;
   inet_aton( host, &(sock.sin_addr));
-  sock.sin_port = htons(9001);
+  sock.sin_port = htons(9002);
   
   printf("[client] connecting to: %s\n", host );
   i = connect( sd, (struct sockaddr *)&sock, sizeof(sock) );
