@@ -159,6 +159,8 @@ int main() {
 	char * password;
 	int amILeader;
 
+	char icons[10] = {'O','X','@','*','$','M','W'};
+
 	int sd = client_connect("127.0.0.1");
 	
 	struct game_info gminfo;
@@ -206,6 +208,4 @@ int main() {
 	}
 	
 	printf("Ready to go!\n");
-	
-	
 }

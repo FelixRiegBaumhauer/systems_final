@@ -11,6 +11,7 @@
 #include <sys/shm.h> 
 
 #include "networking.h"
+#include "game.h"
 
 void process(int sd);
 //char * get_current_lobbies();
@@ -93,9 +94,20 @@ void process(sd) {
 	struct game_info gminfo;
 	int myGroup = 0;
 	
+	//store whose turn it is
 	int shmid;
 	struct shmid_ds shmid_stuff;
-	char * shm = calloc(1024,sizeof(char));
+	int * shm;
+	
+	//store board
+	int shmid2;
+	struct shmid_ds shmid_stuff2;
+	char * shm2 = calloc(1024,sizeof(char));
+	
+	//store num of players
+	int shmid3;
+	struct shmid_ds shmid_stuff3;
+	char * shm3 = calloc(1024,sizeof(char));
 	
 	int receive1 = read(sd,&gminfo.action,sizeof(int));
 	int receive2 = read(sd,&gminfo.username,64);
@@ -111,11 +123,17 @@ void process(sd) {
 		myGroup = get_group_num(gminfo.gamename);
 	}
 	
+	//1: leader, 0: not leader
 	shmid = shmget(ftok("makefile", myGroup), 1024, IPC_CREAT|0644);
-	
 	shm = shmat(shmid,0,0);
 	
 	strcpy(shm,"asdf\n");
+	
+	shmid2 = shmget(ftok("makefile", myGroup+1), 1024, IPC_CREAT|0644);
+	shm2 = shmat(shmid2,0,0);
+	
+	shmid3 = shmget(ftok("makefile", myGroup+2), 1024, IPC_CREAT|0644);
+	shm3 = shmat(shmid3,0,0);
 	
 	if (gminfo.amILeader) {
 		int waiting;
@@ -123,9 +141,18 @@ void process(sd) {
 			read(sd,&waiting,sizeof(int));
 		}
 		strcpy(shm,"go\n");
+		char board[49];
+		initialize(board,7,7);
+		strcpy(shm2,board);
 	} else {
 		while (strcmp(shm,"go\n") != 0) {}
 		int go = 1;
 		int going = write(sd,&go,sizeof(int));
+	}
+	
+	while (checker(shm2,7,7) != -1) {
+		while (*shm1 != amILeader) {
+			time.sleep(5);
+		}
 	}
 }
