@@ -9,8 +9,8 @@
 //returns username
 char * ask_for_handle() {
 	printf("Please type the username you would like to use (max 12 characters) and press enter: ");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
+	char * buffer = calloc(1024,sizeof(char));
+  	fgets(buffer, 1024, stdin);
 	char * newline = strchr(buffer,'\n');
 	*newline = 0;
 	return buffer;
@@ -19,10 +19,10 @@ char * ask_for_handle() {
 //returns 0 (create) or 1 (join)
 int ask_for_action() {
 	int ret;
-	char * buffer = calloc(12,sizeof(char));
+	char * buffer = calloc(1024,sizeof(char));
 	while (strcmp(buffer,"c") != 0 && strcmp(buffer,"j") != 0) {
 		printf("Please type 'c' to create a new game, or 'j' to join an existing game and press enter: ");
-		fgets(buffer,12,stdin);
+		fgets(buffer,1024,stdin);
 		char * newline = strchr(buffer,'\n');
 		*newline = 0;
 	}
@@ -35,8 +35,8 @@ int ask_for_action() {
 //returns for name of game so others can identify it
 char * ask_for_game_name() {
 	printf("Please type the name you would like to use for others to identify your lobby and press enter: ");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
+	char * buffer = calloc(1024,sizeof(char));
+  	fgets(buffer, 1024, stdin);
 	char * newline = strchr(buffer,'\n');
 	*newline = 0;
 	return buffer;
@@ -45,10 +45,10 @@ char * ask_for_game_name() {
 //returns 0 (private) or 1 (public)
 int ask_for_privacy_mode() {
 	int ret;
-	char * buffer = calloc(12,sizeof(char));
+	char * buffer = calloc(1024,sizeof(char));
 	while (strcmp(buffer,"private") != 0 && strcmp(buffer,"public") != 0) {
 		printf("Please type 'public' to let anyone join or 'private' to create a password and press enter: ");
-		fgets(buffer,12,stdin);
+		fgets(buffer,1024,stdin);
 		char * newline = strchr(buffer,'\n');
 		*newline = 0;
 	}
@@ -61,8 +61,8 @@ int ask_for_privacy_mode() {
 //returns password
 char * ask_for_password() {
 	printf("Please type the password you would like to use for others to connect to your lobby and press enter: ");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
+	char * buffer = calloc(1024,sizeof(char));
+  	fgets(buffer, 1024, stdin);
 	char * newline = strchr(buffer,'\n');
 	*newline = 0;
 	return buffer;
@@ -70,8 +70,8 @@ char * ask_for_password() {
 
 char * ask_for_password_joining() {
 	printf("Please type the password of the lobby: ");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
+	char * buffer = calloc(1024,sizeof(char));
+  	fgets(buffer, 1024, stdin);
 	char * newline = strchr(buffer,'\n');
 	*newline = 0;
 	return buffer;
@@ -79,8 +79,8 @@ char * ask_for_password_joining() {
 
 void ask_for_ready() {
 	printf("Type anything when you're ready to start the game.");
-	char * buffer = calloc(12,sizeof(char));
-  	fgets(buffer, 12, stdin);
+	char * buffer = calloc(1024,sizeof(char));
+  	fgets(buffer, 1024, stdin);
 }
 
 char * join_game(char * lobbies) {
@@ -90,8 +90,8 @@ char * join_game(char * lobbies) {
 	} else {
 		printf("%s\n",lobbies);
 		printf("Please type the name of the lobby you would like to join and press enter: ");
-		char * buffer = calloc(12,sizeof(char));
-		fgets(buffer, 12, stdin);
+		char * buffer = calloc(1024,sizeof(char));
+		fgets(buffer, 1024, stdin);
 		char * newline = strchr(buffer,'\n');
 		*newline = 0;
 		/*int notconnected = 1;
@@ -183,7 +183,18 @@ int main() {
 	char * password;
 	int amILeader;
 
-	int sd = client_connect("127.0.0.1");
+        printf("Type the IP address of the server you want to connect to.\n");
+	char * buffer0 = calloc(1024,sizeof(char));
+  	fgets(buffer0, 1024, stdin);
+	char * newline = strchr(buffer0,'\n');
+	*newline = 0;
+	
+	int sd = client_connect(buffer0);
+
+	if (sd == -1) {
+	  printf("Connection refused. Try again.\n");
+	  exit(0);
+	}
 	
 	struct game_info gminfo;
 	
