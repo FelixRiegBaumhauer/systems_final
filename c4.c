@@ -239,17 +239,29 @@ int main() {
 	  if (strncmp(buffer,"0",1)) {
 	    if (gminfo.amILeader == 0) {
 	      char * move = make_move();
-	      strcpy(buffer,move);
+	      strcpy(buffer,"move:");
+	      strcat(buffer,move);
+	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
+	      while (strncmp(buffer,"1",1) != 0) {
+		read(sd,&buffer,sizeof(buffer));
+		sleep(1);
+	      }
 	    }
 	  }
 	  else if (strncmp(buffer,"1",1)) {
 	    if (gminfo.amILeader == 1) {
 	      char * move = make_move();
-	      strcpy(buffer,move);
+	      strcpy(buffer,"move:");
+	      strcat(buffer,move);
+	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
+	      while (strncmp(buffer,"0",1) != 0) {
+		read(sd,&buffer,sizeof(buffer));
+		sleep(1);
+	      }
 	    }
 	  }
 	}

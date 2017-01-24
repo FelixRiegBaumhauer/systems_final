@@ -16,7 +16,7 @@ void initialize(char board[], int x, int y){
   int i;
   int j;
   for(i=0; i<y; i++){
-    for(0; j<x; j++){
+    for(j=0; j<x; j++){
       board[(j+x*i)]='-';
     }
   }
@@ -286,6 +286,11 @@ void process(int sd) {
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      char * num = strchr(buffer,':');
+	      num++;
+	      char * newl = strchr(num,'\n');
+	      newl = 0;
+	      placer(shm2,7,7,atoi(num),icons[1]);
 	    }
 	    *shm = 0;
 	  } else {
@@ -293,6 +298,11 @@ void process(int sd) {
 	      while (strncmp(buffer,"move",4)) {
 		read(sd,&buffer,sizeof(buffer));
 	      }
+	      char * num = strchr(buffer,':');
+	      num++;
+	      char * newl = strchr(num,'\n');
+	      newl = 0;
+	      placer(shm2,7,7,atoi(num),icons[0]);
 	    }
 	    *shm = 1;
 	  }
