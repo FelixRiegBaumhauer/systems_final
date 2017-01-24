@@ -18,26 +18,26 @@ FELIX RIEG-BAUMHAUER, NOAH FICHTER, SEBASTAIN CAIN
 
 6. Run c4 by typing: $./c4--you will be asked to enter the IP address of a computer that is running the server. That computer must allready be running the server.
 
-7. Follow the on screen intrstructions, create a username, we would stronglly encourge the user to make their games public, as the private functionallity is rather undredevolped.
+7. Follow the on screen intrstructions, create a username, we would strongly encourge the user to make their games public, as the private functionality is rather underdeveloped.
 
-8. If want to create a game (one of two compuetrs will have to create one), type c, if you want to join a game type j.
+8. If youwant to create a game (one of two computers will have to create one), type c, if you want to join a game type j.
 
 9. Reminder: if there are no games to join, you can't do so, thus the first user should create a game.
 
-10. Enter the remaining information correctlly.
+10. Enter the remaining information correctly.
 
 11. Important note: the password feature was droped, as such when prompted by the program to enter a password after having chosen to join a game, just hit enter, or most "normal" keys.
 
-12. Now proceed to play connect4, remeber this is a CS class, so we start with 0 on the left side.
+12. Now proceed to play connect4, and remember, this is a CS class, so 0 represents the first column.
 
 Notes:
--ALthough it may irk some of the skilled vidoe game players in this class, our program has some intentional lag. If you eneter a value, give the computer 5 seconds or so, the screen should update as desired.
--If you area luddite, and would preffer to not use the interwebs to connect with a connect 4 partner, the "$make" command also creates exec file game, if you run, "$./game", you will be able to play connect four locally on your own machine. It is the same game as the one being beamed across the internet.
+-ALthough it may irk some of the skilled video game players in this class, our program has some intentional lag. If you eneter a value, give the computer 5 seconds or so, the screen should update as desired.
+-If you are a luddite, and would prefer to not use the interwebs to connect with a connect 4 partner, the "$make" command also creates exec file game, if you run, "$./game", you will be able to play connect four locally on your own machine. It is the same game as the one being beamed across the internet.
 
 
 Dropped Features:
 Due to time issues.
--Password protected games (the password functionallity in our game does not really exist)
+-Password protected games (the password functionality in our game does not really exist)
 -non 2 dimensional multiplayer 
 -GUI
 
