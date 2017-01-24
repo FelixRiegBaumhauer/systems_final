@@ -273,7 +273,8 @@ void process(int sd) {
 	}
 
 	char buffer[1024];
-	for (int i = 0; i < 1024; i++) {
+	int i;
+	for (i = 0; i < 1024; i++) {
 	  buffer[i] = 0;
 	}
 	char icons[10] = {'O','X','@','*','$','M','W'};
