@@ -10,6 +10,9 @@ Began coding of game.c, the file that holds the actual connect4 game, still need
 felixR -- 2017-01-12 10:15
 Finished the game portion of our project, the project now has a basic multiplayer game of connect4. Some additional features will still be added--and the whole thing will have to be intergrated into the lobby. 
 
+noahF -- 2017-01-13 17:00
+Began working on lobby.
+
 felixR -- 2017-01-16 11:30 
 Created game.h and cleaned up game.c, waiting for the information transfer mechanisms to work
 
@@ -19,6 +22,20 @@ Fixed a bug with game, as it sometimes mistakenlly awarded victories, this was d
 felixR -- 2017-01-18 18:45
 Added the basic networking files
 
+noahF -- 2017-01-19 17:00
+Finished the lobby, now users can eneter their information
+
 felixR -- 2017-01-23 16:55
 Fixed that issue with the writing, now we need to intergrate
 
+noahF -- 2017-01-23 21:00
+Furthered the goal of enabaling internet connect four, by linking and sorting out the issues with the server and client files
+
+noahF -- 2017-01-24 7:00
+Finished intergating all aspects of networking into the project, allowing for internet based connect 4. Played a vital role in this endeavour
+
+sebatianC -- 2017-01-24 7:00
+Finished intergating all aspects of networking into the project, allowing for internet based connect 4.
+
+felixR -- 2017-01-24 7:00
+Finished intergating all aspects of networking into the project, allowing for internet based connect 4.
