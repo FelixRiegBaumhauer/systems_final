@@ -274,7 +274,9 @@ void process(int sd) {
 
 	char buffer[1024];
 	char icons[10] = {'O','X','@','*','$','M','W'};
+	int new;
 	while (checker(shm2,7,7,icons[0]) == -1 && checker(shm2,7,7,icons[1]) == -1) {
+	  printf("shm: %d\n",*shm);
 	  if (*shm == 1) {
 	    strcpy(buffer,"1\n");
 	  } else {
@@ -292,8 +294,13 @@ void process(int sd) {
 	      char * newl = strchr(num,'\n');
 	      newl = 0;
 	      placer(shm2,7,7,atoi(num),icons[1]);
+	      new = 0;
+	    } else {
+	      while (strncmp(buffer,"move",4)) {
+		read(sd,&buffer,sizeof(buffer));
+	      }
+	      new = 0;
 	    }
-	    *shm = 0;
 	  } else {
 	    if (gminfo.amILeader == 0) {
 	      while (strncmp(buffer,"move",4)) {
@@ -304,10 +311,17 @@ void process(int sd) {
 	      char * newl = strchr(num,'\n');
 	      newl = 0;
 	      placer(shm2,7,7,atoi(num),icons[0]);
+	      new = 1;
+	    } else {
+	      while (strncmp(buffer,"move",4)) {
+		read(sd,&buffer,sizeof(buffer));
+	      }
+	      new = 1;
 	    }
-	    *shm = 1;
 	  }
+	  * shm = new;
 	}
+	write(sd,&buffer,sizeof(buffer));
 	strcpy(buffer,"Game over!\n");
 	write(sd,&buffer,sizeof(buffer));
 }

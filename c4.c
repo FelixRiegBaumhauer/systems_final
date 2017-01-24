@@ -165,6 +165,10 @@ void print_board(char board[], int x, int y){
     }
     printf("\n");
   }
+  for (i = 0; i < x; i++) {
+    printf("%d",i);
+  }
+  printf("\n");
 
   printf("-------------------------\n");
 }
@@ -228,47 +232,48 @@ int main() {
 	printf("Ready to go!\n");
 	
 	char buffer[1024];
+
+	int turn = 0;
 	
 	while (strcmp(buffer,"Game over!\n") != 0) {
 	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
 	    read(sd,&buffer,sizeof(buffer));
 	    sleep(1);
 	  }
+	  printf("b[0]: %c\n",buffer[0]);
+	  if (strncmp(buffer,"0",1) == 0) {
+	    turn = 0;
+	  } else {
+	    turn = 1;
+	  }
 	  strcpy(buffer,strchr(buffer,'\n')+1);
-      printf("buffer[0] %d", buffer[0]);
-	  if (strncmp(buffer,"0",1)) {
+	  if (turn == 0) {
 	    if (gminfo.amILeader == 0) {
-          print_board(buffer,7,7);
+	      print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
-	      while (1) {
-            read(sd,&buffer,sizeof(buffer));
-            if (strncmp(buffer,"1",1) == 0) {
-              break;
-            }
-            sleep(1);
+	      while (strncmp(buffer,"1",1) != 0) {
+		read(sd,&buffer,sizeof(buffer));
+		printf("%s\n",buffer);
 	      }
 	    }
 	  }
-	  else if (strncmp(buffer,"1",1)) {
+	  else if (turn == 1) {
 	    if (gminfo.amILeader == 1) {
-          print_board(buffer,7,7);
+	      print_board(buffer,7,7);
 	      char * move = make_move();
 	      strcpy(buffer,"move:");
 	      strcat(buffer,move);
 	      write(sd,&buffer,sizeof(buffer));
 	    } else {
 	      printf("Waiting for other player to move.\n");
-          while (1) {
-            read(sd,&buffer,sizeof(buffer));
-            if (strncmp(buffer,"0",1) == 0) {
-              break;
-            }
-		sleep(1);
+	      while (strncmp(buffer,"0",1) != 0) {
+		read(sd,&buffer,sizeof(buffer));
+		printf("%s\n",buffer);
 	      }
 	    }
 	  }
