@@ -286,9 +286,7 @@ void process(int sd) {
 	  }
 	  strcat(buffer,shm2);
 	  sleep(1);
-	  printf("before\n");
 	  write(sd,&buffer,sizeof(buffer));
-	  printf("after\n");
 	  new = *shm;
 	  if (new == 1) {
 	    if (gminfo.amILeader == 1) {

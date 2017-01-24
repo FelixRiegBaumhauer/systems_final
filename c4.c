@@ -239,7 +239,6 @@ int main() {
 	  while (strncmp(buffer,"0",1) != 0 && strncmp(buffer,"1",1 != 0)) {
 	    read(sd,&buffer,sizeof(buffer));
 	  }
-	  printf("%s\n",buffer);
 	  if (strncmp(buffer,"0",1) == 0) {
 	    turn = 0;
 	  } else {
@@ -271,7 +270,7 @@ int main() {
 	    }
 	  }
 	}
-	printf("%s\n",buffer);
+	printf("Game over!\n");
 	close(sd);
 	exit(0);
 }
